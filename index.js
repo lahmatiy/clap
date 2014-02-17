@@ -92,10 +92,10 @@ var Option = function(usage, description){
     // long usage
     // --flag
     // --no-flag - invert value if flag is boolean
-    .replace(/^--(no-)?([a-zA-Z][a-zA-Z0-9\-\_]+)\s*/, function(m, no, name){
-      self.name = name;
-      self.long = (no || '') + name;
-      self.defValue = !!no;
+    .replace(/^--([a-zA-Z][a-zA-Z0-9\-\_]+)\s*/, function(m, name){
+      self.long = name;
+      self.name = name.replace(/(^|-)no-/, '$1');
+      self.defValue = self.name != self.long;
 
       return '';
     });
