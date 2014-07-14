@@ -11,7 +11,7 @@ function returnFirstArg(value){
   return value;
 }
 
-function pad(width, str) {
+function pad(width, str){
   return str + Array(Math.max(0, width - str.length) + 1).join(' ');
 }
 
@@ -39,7 +39,8 @@ function parseParams(str, multiple){
 
       return '';
     });
-  } while (tmp != left);
+  }
+  while (tmp != left);
 
   do {
     tmp = left;
@@ -49,16 +50,27 @@ function parseParams(str, multiple){
 
       return '';
     });
-  } while (tmp != left);
+  }
+  while (tmp != left);
 
   if (left)
-    throw new Error('Bad parameter description: ' + str);
+    throw new ParseError('Bad parameter description: ' + str);
 
   return result.args.length ? result : false;
 }
 
 /**
-*
+* @class
+*/
+
+var ParseError = function(message){
+  this.message = message;
+};
+ParseError.prototype = Object.create(Error.prototype);
+ParseError.prototype.name = 'ParseError';
+
+/**
+* @class
 */
 var Argument = function(name, required){
   this.name = name;
@@ -80,7 +92,7 @@ Argument.prototype = {
 */
 var Option = function(usage, description){
   var self = this;
-  var params;  
+  var params;
   var left = usage.trim()
     // short usage
     // -x
@@ -101,13 +113,13 @@ var Option = function(usage, description){
     });
 
   if (!this.long)
-    throw new Error('Usage has no long name: ' + usage);
+    throw new ParseError('Usage has no long name: ' + usage);
 
   try {
     params = parseParams(left);
   } catch(e) {
     console.log(e.message);
-    throw new Error('Bad paramenter description in usage for option: ' + usage);
+    throw new ParseError('Bad paramenter description in usage for option: ' + usage);
   }
 
   if (params)
@@ -122,7 +134,7 @@ var Option = function(usage, description){
   }
 
   if (left)
-    throw new Error('Bad usage description for option: ' + usage);
+    throw new ParseError('Bad usage description for option: ' + usage);
 
   if (!this.name)
     this.name = this.long;
@@ -130,7 +142,7 @@ var Option = function(usage, description){
   this.description = description || '';
   this.usage = usage.trim();
   this.camelName = camelize(this.name);
-}
+};
 
 Option.prototype = {
   name: '',
@@ -142,7 +154,7 @@ Option.prototype = {
   minArgsCount: 0,
   maxArgsCount: 0,
   args: null,
-  
+
   defValue: undefined,
   normalize: returnFirstArg
 };
@@ -156,7 +168,7 @@ function createOption(usage, description, opt_1, opt_2){
   var option = new Option(usage, description);
 
   // if (option.bool && arguments.length > 2)
-  //   throw new Error('bool flags can\'t has default value or validator');
+  //   throw new ParseError('bool flags can\'t has default value or validator');
 
   if (arguments.length == 3)
   {
@@ -186,7 +198,7 @@ function addOptionToCommand(command, option){
     commandOption = command.short[option.short];
 
     if (commandOption)
-      throw new Error('Short option name -' + option.short + ' already in use by ' + commandOption.usage + ' ' + commandOption.description);
+      throw new ParseError('Short option name -' + option.short + ' already in use by ' + commandOption.usage + ' ' + commandOption.description);
 
     command.short[option.short] = option;
   }
@@ -195,7 +207,7 @@ function addOptionToCommand(command, option){
   commandOption = command.long[option.long];
 
   if (commandOption)
-    throw new Error('Long option --' + option.long + ' already in use by ' + commandOption.usage + ' ' + commandOption.description);
+    throw new ParseError('Long option --' + option.long + ' already in use by ' + commandOption.usage + ' ' + commandOption.description);
 
   command.long[option.long] = option;
 
@@ -203,7 +215,7 @@ function addOptionToCommand(command, option){
   commandOption = command.options[option.camelName];
 
   if (commandOption)
-    throw new Error('Name option ' + option.camelName + ' already in use by ' + commandOption.usage + ' ' + commandOption.description);
+    throw new ParseError('Name option ' + option.camelName + ' already in use by ' + commandOption.usage + ' ' + commandOption.description);
 
   command.options[option.camelName] = option;
 
@@ -228,7 +240,7 @@ function processArgs(command, args, suggest){
     var params = [];
 
     if (!option)
-      throw new Error('Unknown option name: ' + token);
+      throw new ParseError('Unknown option name: ' + token);
 
     if (option.maxArgsCount)
     {
@@ -243,7 +255,7 @@ function processArgs(command, args, suggest){
       }
 
       if (params.length < option.minArgsCount)
-        throw new Error('Option ' + token + ' should be used with at least ' + option.minArgsCount + ' argument(s)\nUsage: ' + option.usage);
+        throw new ParseError('Option ' + token + ' should be used with at least ' + option.minArgsCount + ' argument(s)\nUsage: ' + option.usage);
     }
     else
     {
@@ -317,7 +329,7 @@ function processArgs(command, args, suggest){
           if (suggestPoint)
             return findVariants(command, token);
           else
-            throw new Error('Unknown option: ' + token);
+            throw new ParseError('Unknown option: ' + token);
         }
 
         // process option
@@ -327,14 +339,14 @@ function processArgs(command, args, suggest){
       {
         // short flags sequence
         if (!/^-[a-zA-Z]+$/.test(token))
-          throw new Error('Wrong short option sequence: ' + token);
+          throw new ParseError('Wrong short option sequence: ' + token);
 
         if (token.length == 2)
         {
           option = command.short[token[1]];
 
           if (!option)
-            throw new Error('Unknown short option name: -' + token[j]);
+            throw new ParseError('Unknown short option name: -' + token[j]);
 
           // single option
           processOption(option, command);
@@ -347,10 +359,10 @@ function processArgs(command, args, suggest){
             option = command.short[token[j]];
 
             if (!option)
-              throw new Error('Unknown short option name: -' + token[j]);
+              throw new ParseError('Unknown short option name: -' + token[j]);
 
             if (option.maxArgsCount)
-              throw new Error('Non-boolean option -' + token[j] + ' can\'t be used in short option sequence: ' + token);
+              throw new ParseError('Non-boolean option -' + token[j] + ' can\'t be used in short option sequence: ' + token);
 
             processOption(option, command);
           }
@@ -384,7 +396,7 @@ function processArgs(command, args, suggest){
         if (suggestPoint)
           return findVariants(command, token);
         else
-          throw new Error('Unknown command: ' + token);
+          throw new ParseError('Unknown command: ' + token);
       }
     }
   }
@@ -418,7 +430,7 @@ var Command = function(name, params){
     if (params)
       this.params = parseParams(params);
   } catch(e) {
-    throw new Error('Bad paramenter description in command definition: ' + this.name + ' ' + params);
+    throw new ParseError('Bad paramenter description in command definition: ' + this.name + ' ' + params);
   }
 
   this.commands = {};
@@ -434,7 +446,7 @@ var Command = function(name, params){
     this.showHelp();
     process.exit(0);
   }, undefined);
-}
+};
 
 Command.prototype = {
   params: null,
@@ -459,7 +471,7 @@ Command.prototype = {
   },
   shortcut: function(usage, description, fn, opt_1, opt_2){
     if (typeof fn != 'function')
-      throw new Error('fn should be a function');
+      throw new ParseError('fn should be a function');
 
     var command = this;
     var option = addOptionToCommand(this, createOption(usage, description, opt_1, opt_2));
@@ -467,7 +479,7 @@ Command.prototype = {
 
     option.normalize = function(value){
       var values;
-      
+
       value = normalize.call(command, value);
       values = fn(value);
 
@@ -481,7 +493,7 @@ Command.prototype = {
       command.values[option.name] = value;
 
       return value;
-    }
+    };
 
     return this;
   },
@@ -496,7 +508,7 @@ Command.prototype = {
   },
   setOption: function(name, value){
     if (!this.hasOption(name))
-      throw new Error('Option `' + name + '` is not defined');
+      throw new ParseError('Option `' + name + '` is not defined');
 
     var option = this.options[name];
     var newValue = Array.isArray(value)
@@ -525,7 +537,7 @@ Command.prototype = {
       name = nameOrCommand;
 
       if (!/^[a-zA-Z][a-zA-Z0-9\-\_]*$/.test(name))
-        throw new Error('Wrong command name: ' + name);
+        throw new ParseError('Wrong command name: ' + name);
     }
 
     // search for existing one
@@ -548,8 +560,8 @@ Command.prototype = {
 
   version: function(version, usage, description){
     if (this.version_)
-      throw new Error('Version for command could be set only once');
-    
+      throw new ParseError('Version for command could be set only once');
+
     this.version_ = version;
     this.option(
       usage || '-v, --version',
@@ -565,7 +577,7 @@ Command.prototype = {
   },
   description: function(description){
     if (this.description_)
-      throw new Error('Description for command could be set only once');
+      throw new ParseError('Description for command could be set only once');
 
     this.description_ = description;
 
@@ -574,10 +586,10 @@ Command.prototype = {
 
   init: function(fn){
     if (this.init_ !== noop)
-      throw new Error('Init function for command could be set only once');
+      throw new ParseError('Init function for command could be set only once');
 
     if (typeof fn != 'function')
-      throw new Error('Value for init should be a function');
+      throw new ParseError('Value for init should be a function');
 
     this.init_ = fn;
 
@@ -585,10 +597,10 @@ Command.prototype = {
   },
   args: function(fn){
     if (this.args_ !== noop)
-      throw new Error('Arguments handler for command could be set only once');
+      throw new ParseError('Arguments handler for command could be set only once');
 
     if (typeof fn != 'function')
-      throw new Error('Value for arguments handler should be a function');
+      throw new ParseError('Value for arguments handler should be a function');
 
     this.args_ = fn;
 
@@ -596,10 +608,10 @@ Command.prototype = {
   },
   delegate: function(fn){
     if (this.delegate_ !== noop)
-      throw new Error('Delegate function could be set only once');
+      throw new ParseError('Delegate function could be set only once');
 
     if (typeof fn != 'function')
-      throw new Error('Value for delegate should be a function');
+      throw new ParseError('Value for delegate should be a function');
 
     this.delegate_ = fn;
 
@@ -607,10 +619,10 @@ Command.prototype = {
   },
   action: function(fn){
     if (this.action_ !== noop)
-      throw new Error('Action for command could be set only once');
+      throw new ParseError('Action for command could be set only once');
 
     if (typeof fn != 'function')
-      throw new Error('Value for action should be a function');
+      throw new ParseError('Value for action should be a function');
 
     this.action_ = fn;
 
@@ -660,7 +672,7 @@ Command.prototype = {
       }, {}));
 
       if (i == commands.length - 1)
-        command.action_(item.args, item.literalArgs)
+        command.action_(item.args, item.literalArgs);
       else
         prevCommand = command;
     }
@@ -719,7 +731,7 @@ function showCommandHelp(command){
       }).join(' ');*/
 
       lines.push(
-        '  ' + 
+        '  ' +
         pad(22, name + (cmd.hasOptions() ? ' [options]' : '') + ' ' + args) +
         (cmd.description_ ? ' ' + cmd.description_ : '')
       );
@@ -746,7 +758,7 @@ function showCommandHelp(command){
     var width = options.reduce(function(res, option){
       return Math.max(res, option.usage.length);
     }, 0);
-  
+
     // Prepend the help information
     return [
       '',
@@ -779,15 +791,17 @@ function showCommandHelp(command){
 //
 
 module.exports = {
+  Error: ParseError,
+  Argument: Argument,
   Command: Command,
   Option: Option,
 
   error: function(fn){
     if (errorHandler)
-      throw new Error('Error handler should be set only once');
+      throw new ParseError('Error handler should be set only once');
 
     if (typeof fn != 'function')
-      throw new Error('Error handler should be a function');
+      throw new ParseError('Error handler should be a function');
 
     errorHandler = fn;
 
