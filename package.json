@@ -16,6 +16,7 @@
     "node": ">=0.8.0"
   },
   "dependencies": {
+    "chalk": "0.5.1"
   },
   "devDependencies": {
     "mocha": "~1.17.1"

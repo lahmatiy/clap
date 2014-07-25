@@ -1,5 +1,15 @@
-
 var errorHandler;
+var commandsPath;
+
+var reAstral = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+var ansiRegex = /\x1B\[([0-9]{1,3}(;[0-9]{1,3})*)?[m|K]/g;
+
+function stringLength(str){
+  return str
+    .replace(ansiRegex, '')
+    .replace(reAstral, ' ')
+    .length;
+}
 
 function camelize(name){
   return name.replace(/-(.)/g, function(m, ch){
@@ -12,7 +22,7 @@ function returnFirstArg(value){
 }
 
 function pad(width, str){
-  return str + Array(Math.max(0, width - str.length) + 1).join(' ');
+  return str + Array(Math.max(0, width - stringLength(str)) + 1).join(' ');
 }
 
 function noop(){
@@ -282,6 +292,8 @@ function processArgs(command, args, suggest){
   var noOptionsYet = true;
   var option;
 
+  commandsPath = [command.name];
+
   for (var i = 0; i < args.length; i++)
   {
     var suggestPoint = suggest && i == args.length - 1;
@@ -377,6 +389,8 @@ function processArgs(command, args, suggest){
         command = command.commands[token];
         noOptionsYet = true;
 
+        commandsPath.push(command.name);
+
         resultToken = {
           command: command,
           args: [],
@@ -418,6 +432,7 @@ function processArgs(command, args, suggest){
 
   return result;
 }
+
 
 /**
 * @class
@@ -715,33 +730,34 @@ Command.prototype = {
  */
 
 function showCommandHelp(command){
+
   function commandsHelp(){
     if (!command.hasCommands())
       return '';
 
     var lines = [];
+    var maxNameLength = 24;
     for (var name in command.commands)
     {
       var cmd = command.commands[name];
-      var args = '';
-      /*var args = cmd._args.map(function(arg){
-        return arg.required
-          ? '<' + arg.name + '>'
-          : '[' + arg.name + ']';
-      }).join(' ');*/
+      var line = {
+        name: chalk.green(name) +
+          (cmd.hasOptions() ? ' [<options>]' : '') +
+          (cmd._args && cmd._args.length ? ' [<args>]' : ''),
+        description: cmd.description_ || ''
+      };
 
-      lines.push(
-        '  ' +
-        pad(22, name + (cmd.hasOptions() ? ' [options]' : '') + ' ' + args) +
-        (cmd.description_ ? ' ' + cmd.description_ : '')
-      );
+      maxNameLength = Math.max(maxNameLength, stringLength(line.name));
+      lines.push(line);
     }
 
     return [
       '',
       'Commands:',
       '',
-      lines.join('\n'),
+      lines.map(function(line){
+        return '  ' + pad(maxNameLength, line.name) + '  ' + line.description;
+      }).join('\n'),
       ''
     ].join('\n');
   }
@@ -750,34 +766,45 @@ function showCommandHelp(command){
     if (!command.hasOptions())
       return '';
 
-    var options = [];
+    var lines = [];
+    var maxNameLength = 24;
+    for (var name in command.long)
+    {
+      var option = command.long[name];
+      var line = {
+        name: chalk.yellow(option.usage),
+        description: option.description
+      };
 
-    for (var key in command.long)
-      options.push(command.long[key]);
-
-    var width = options.reduce(function(res, option){
-      return Math.max(res, option.usage.length);
-    }, 0);
+      maxNameLength = Math.max(maxNameLength, stringLength(line.name));
+      lines.push(line);
+    }
 
     // Prepend the help information
     return [
       '',
       'Options:',
       '',
-      options.map(function(option){
-        return '  ' + pad(width, option.usage) + '  ' + option.description;
+      lines.map(function(line){
+        return '  ' + pad(maxNameLength, line.name) + '  ' + line.description;
       }).join('\n'),
       ''
     ].join('\n');
   }
 
   var output = [];
+  var chalk = require('chalk');
+
+  chalk.enabled = module.exports.color && process.stdout.isTTY;
 
   if (command.description_)
     output.push(command.description_ + '\n');
 
   output.push(
-    'Usage:\n\n  ' + command.name + (command.hasOptions() ? ' [options]' : '') + (command.hasCommands() ? ' [command]' : ''),
+    'Usage:\n\n  ' +
+      chalk.cyan(commandsPath ? commandsPath.join(' ') : command.name) +
+      chalk.yellow(command.hasOptions() ? ' [<options>]' : '') +
+      chalk.green(command.hasCommands() ? ' [<command>]' : ''),
     commandsHelp() +
     optionsHelp()
   );
@@ -791,6 +818,8 @@ function showCommandHelp(command){
 //
 
 module.exports = {
+  color: true,
+
   Error: ParseError,
   Argument: Argument,
   Command: Command,
