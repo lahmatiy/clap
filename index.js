@@ -799,7 +799,9 @@ function showCommandHelp(command){
     var lines = Object.keys(command.long).sort().map(function(name){
       var option = command.long[name];
       var line = {
-        name: chalk.yellow(option.usage),
+        name: option.usage.replace(/(^|\s)(-[^\s,]+)/ig, function(m, p, flag){
+          return p + chalk.yellow(flag);
+        }),
         description: option.description
       };
 
@@ -831,8 +833,8 @@ function showCommandHelp(command){
   output.push(
     'Usage:\n\n  ' +
       chalk.cyan(commandsPath ? commandsPath.join(' ') : command.name) +
-      chalk.yellow(command.hasOptions() ? ' [<options>]' : '') +
-      chalk.green(command.hasCommands() ? ' [<command>]' : ''),
+      (command.hasOptions() ? ' [' + chalk.yellow('<options>') + ']' : '') +
+      (command.hasCommands() ? ' [' + chalk.green('<command>') + ']' : ''),
     commandsHelp() +
     optionsHelp()
   );
