@@ -1,3 +1,6 @@
+var MAX_LINE_WIDTH = process.stdout.columns || 200;
+var MIN_OFFSET = 25;
+
 var errorHandler;
 var commandsPath;
 
@@ -730,12 +733,39 @@ Command.prototype = {
  */
 
 function showCommandHelp(command){
+  function breakByLines(str, offset){
+    var words = str.split(' ');
+    var maxWidth = MAX_LINE_WIDTH - offset || 0;
+    var lines = [];
+    var line = '';
+
+    while (words.length)
+    {
+      var word = words.shift();
+      if (!line || (line.length + word.length + 1) < maxWidth)
+      {
+        line += (line ? ' ' : '') + word;
+      }
+      else
+      {
+        lines.push(line);
+        words.unshift(word);
+        line = '';
+      }
+    }
+
+    lines.push(line);
+
+    return lines.map(function(line, idx){
+      return (idx && offset ? pad(offset, '') : '') + line;
+    }).join('\n');
+  }
 
   function commandsHelp(){
     if (!command.hasCommands())
       return '';
 
-    var maxNameLength = 24;
+    var maxNameLength = MIN_OFFSET - 2;
     var lines = Object.keys(command.commands).sort().map(function(name){
       var cmd = command.commands[name];
       var line = {
@@ -755,7 +785,7 @@ function showCommandHelp(command){
       'Commands:',
       '',
       lines.map(function(line){
-        return '  ' + pad(maxNameLength, line.name) + '  ' + line.description;
+        return '  ' + pad(maxNameLength, line.name) + '  ' + breakByLines(line.description, maxNameLength + 4);
       }).join('\n'),
       ''
     ].join('\n');
@@ -765,7 +795,7 @@ function showCommandHelp(command){
     if (!command.hasOptions())
       return '';
 
-    var maxNameLength = 24;
+    var maxNameLength = MIN_OFFSET - 2;
     var lines = Object.keys(command.long).sort().map(function(name){
       var option = command.long[name];
       var line = {
@@ -784,7 +814,7 @@ function showCommandHelp(command){
       'Options:',
       '',
       lines.map(function(line){
-        return '  ' + pad(maxNameLength, line.name) + '  ' + line.description;
+        return '  ' + pad(maxNameLength, line.name) + '  ' + breakByLines(line.description, maxNameLength + 4);
       }).join('\n'),
       ''
     ].join('\n');
