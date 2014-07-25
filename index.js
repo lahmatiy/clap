@@ -735,10 +735,8 @@ function showCommandHelp(command){
     if (!command.hasCommands())
       return '';
 
-    var lines = [];
     var maxNameLength = 24;
-    for (var name in command.commands)
-    {
+    var lines = Object.keys(command.commands).sort().map(function(name){
       var cmd = command.commands[name];
       var line = {
         name: chalk.green(name) +
@@ -748,8 +746,9 @@ function showCommandHelp(command){
       };
 
       maxNameLength = Math.max(maxNameLength, stringLength(line.name));
-      lines.push(line);
-    }
+
+      return line;
+    });
 
     return [
       '',
@@ -766,10 +765,8 @@ function showCommandHelp(command){
     if (!command.hasOptions())
       return '';
 
-    var lines = [];
     var maxNameLength = 24;
-    for (var name in command.long)
-    {
+    var lines = Object.keys(command.long).sort().map(function(name){
       var option = command.long[name];
       var line = {
         name: chalk.yellow(option.usage),
@@ -777,8 +774,9 @@ function showCommandHelp(command){
       };
 
       maxNameLength = Math.max(maxNameLength, stringLength(line.name));
-      lines.push(line);
-    }
+
+      return line;
+    });
 
     // Prepend the help information
     return [
