@@ -457,6 +457,7 @@ var Command = function(name, params){
   this.short = {};
   this.long = {};
   this.values = {};
+  this.defaults_ = {};
 
   this.suggestions = [];
 
@@ -481,6 +482,7 @@ Command.prototype = {
   delegate_: noop,
   action_: noop,
   args_: noop,
+  defaults_: null,
 
   option: function(usage, description, opt_1, opt_2){
     addOptionToCommand(this, createOption.apply(null, arguments));
@@ -524,7 +526,7 @@ Command.prototype = {
       if (count++)
         return true;
   },
-  setOption: function(name, value){
+  setOption: function(name, value, isDefault){
     if (!this.hasOption(name))
       throw new ParseError('Option `' + name + '` is not defined');
 
@@ -534,11 +536,21 @@ Command.prototype = {
           : option.normalize.call(this, value);
 
     this.values[name] = option.maxArgsCount ? newValue : value;
+
+    if (!hasOwnProperty.call(this.defaults_, name))
+      this.defaults_[name] = this.values[name];
   },
   setOptions: function(values){
     for (var name in values)
       if (values.hasOwnProperty(name) && this.hasOption(name))
         this.setOption(name, values[name]);
+  },
+  reset: function(){
+    this.values = {};
+
+    for (var optionName in this.defaults_)
+      if (hasOwnProperty.call(this.defaults_, optionName))
+        this.values[optionName] = this.defaults_[optionName];
   },
 
   command: function(nameOrCommand, params){
@@ -675,6 +687,9 @@ Command.prototype = {
     {
       var item = commands[i];
       var command = item.command;
+
+      // reset command values
+      command.reset();
 
       if (prevCommand)
         prevCommand.delegate_(command);
