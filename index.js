@@ -665,8 +665,6 @@ Command.prototype = {
     if (!args)
       args = process.argv.slice(2);
 
-    //console.log(args);
-
     if (!errorHandler)
       return processArgs(this, args, suggest);
     else
@@ -676,13 +674,14 @@ Command.prototype = {
         errorHandler(e.message || e);
       }
   },
-  run: function(args){
+  run: function(args, context){
     var commands = this.parse(args);
 
     if (!commands)
       return;
 
     var prevCommand;
+    var context = context || {};
     for (var i = 0; i < commands.length; i++)
     {
       var item = commands[i];
@@ -690,6 +689,7 @@ Command.prototype = {
 
       // reset command values
       command.reset();
+      command.context = context;
 
       if (prevCommand)
         prevCommand.delegate_(command);
