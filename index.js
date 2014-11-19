@@ -704,8 +704,6 @@ Command.prototype = {
         return res;
       }, {}));
 
-      if (i == commands.length - 1)
-        
       prevCommand = command;
     }
 
