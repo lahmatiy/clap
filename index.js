@@ -705,10 +705,13 @@ Command.prototype = {
       }, {}));
 
       if (i == commands.length - 1)
-        command.action_(item.args, item.literalArgs);
-      else
-        prevCommand = command;
+        
+      prevCommand = command;
     }
+
+    // return last command action result
+    if (command)
+      return command.action_(item.args, item.literalArgs);
   },
 
   normalize: function(values){
