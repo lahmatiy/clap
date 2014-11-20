@@ -329,7 +329,8 @@ function processArgs(command, args, suggest){
 
       if (commandArgs.length)
       {
-        command.args_.apply(command, commandArgs);
+        //command.args_.apply(command, commandArgs);
+        resultToken.args = commandArgs;
         commandArgs = [];
       }
 
@@ -386,8 +387,17 @@ function processArgs(command, args, suggest){
     }
     else
     {
-      if (command.commands[token])
+      if (command.commands[token] && (!command.params || commandArgs.length >= command.params.minArgsCount))
       {
+        if (noOptionsYet)
+        {
+          resultToken.args = commandArgs;
+          commandArgs = [];
+        }
+
+        if (command.params && resultToken.args.length < command.params.minArgsCount)
+          throw new ParseError('Missed required argument(s) for command `' + command.name + '`');
+
         // switch control to another command
         command = command.commands[token];
         noOptionsYet = true;
@@ -431,6 +441,9 @@ function processArgs(command, args, suggest){
       resultToken.literalArgs = commandArgs;
     else
       resultToken.args = commandArgs;
+
+    if (command.params && resultToken.args.length < command.params.minArgsCount)
+      throw new ParseError('Missed required argument(s) for command `' + command.name + '`');
   }
 
   return result;
