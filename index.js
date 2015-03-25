@@ -234,7 +234,7 @@ function addOptionToCommand(command, option){
 
   // set default value
   if (typeof option.defValue != 'undefined')
-    command.setOption(option.camelName, option.defValue);
+    command.setOption(option.camelName, option.defValue, true);
 
   // add to suggestions
   command.suggestions.push('--' + option.long);
@@ -550,7 +550,7 @@ Command.prototype = {
 
     this.values[name] = option.maxArgsCount ? newValue : value;
 
-    if (!hasOwnProperty.call(this.defaults_, name))
+    if (isDefault && !hasOwnProperty.call(this.defaults_, name))
       this.defaults_[name] = this.values[name];
   },
   setOptions: function(values){
