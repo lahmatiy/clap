@@ -3,7 +3,7 @@
   "title": "Command line argument parser",
   "description": "Command line argument parser",
   "author": "Roman Dvornov <rdvornov@gmail.com>",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "keywords": ["cli", "command", "option", "argument", "completion"],
   "homepage": "https://github.com/lahmatiy/clap",
   "repository": {
@@ -16,7 +16,7 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "chalk": "0.5.1"
+    "chalk": "1.1.0"
   },
   "devDependencies": {
     "mocha": "~1.17.1"
