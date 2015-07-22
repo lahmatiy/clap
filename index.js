@@ -377,7 +377,7 @@ function processArgs(command, args, suggest){
           option = command.short[token[1]];
 
           if (!option)
-            throw new ParseError('Unknown short option name: -' + token[j]);
+            throw new ParseError('Unknown short option name: -' + token[1]);
 
           // single option
           processOption(option, command);
