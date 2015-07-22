@@ -824,13 +824,18 @@ function showCommandHelp(command){
     if (!command.hasOptions())
       return '';
 
+    var hasShortOptions = Object.keys(command.short).length > 0;
     var maxNameLength = MIN_OFFSET - 2;
     var lines = Object.keys(command.long).sort().map(function(name){
       var option = command.long[name];
       var line = {
-        name: option.usage.replace(/(^|\s)(-[^\s,]+)/ig, function(m, p, flag){
-          return p + chalk.yellow(flag);
-        }),
+        name: option.usage
+          .replace(/^(?:-., |)/, function(m, short){
+            return m || (hasShortOptions ? '    ' : '');
+          })
+          .replace(/(^|\s)(-[^\s,]+)/ig, function(m, p, flag){
+            return p + chalk.yellow(flag);
+          }),
         description: option.description
       };
 
