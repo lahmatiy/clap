@@ -534,10 +534,7 @@ Command.prototype = {
     return this.options.hasOwnProperty(name);
   },
   hasOptions: function(){
-    var count = 0;
-    for (var key in this.options)
-      if (count++)
-        return true;
+    return Object.keys(this.options).length > 0;
   },
   setOption: function(name, value, isDefault){
     if (!this.hasOption(name))
@@ -597,8 +594,7 @@ Command.prototype = {
     return subcommand;
   },
   hasCommands: function(){
-    for (var key in this.commands)
-      return true;
+    return Object.keys(this.commands).length > 0;
   },
 
   version: function(version, usage, description){
@@ -796,12 +792,12 @@ function showCommandHelp(command){
 
     var maxNameLength = MIN_OFFSET - 2;
     var lines = Object.keys(command.commands).sort().map(function(name){
-      var cmd = command.commands[name];
+      var subcommand = command.commands[name];
       var line = {
         name: chalk.green(name) +
-          (cmd.hasOptions() ? ' [<options>]' : '') +
-          (cmd._args && cmd._args.length ? ' [<args>]' : ''),
-        description: cmd.description_ || ''
+          (subcommand.hasOptions() ? ' [<options>]' : '') +
+          (subcommand._args && subcommand._args.length ? ' [<args>]' : ''),
+        description: subcommand.description_ || ''
       };
 
       maxNameLength = Math.max(maxNameLength, stringLength(line.name));
