@@ -6,6 +6,7 @@ var commandsPath;
 
 var reAstral = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
 var ansiRegex = /\x1B\[([0-9]{1,3}(;[0-9]{1,3})*)?[m|K]/g;
+var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 function stringLength(str){
   return str
@@ -18,6 +19,14 @@ function camelize(name){
   return name.replace(/-(.)/g, function(m, ch){
     return ch.toUpperCase();
   });
+}
+
+function assign(dest, source){
+  for (var key in source)
+    if (hasOwnProperty.call(source, key))
+      dest[key] = source[key];
+
+  return dest;
 }
 
 function returnFirstArg(value){
@@ -141,9 +150,7 @@ var Option = function(usage, description){
     this.name = this.long;
     this.defValue = undefined;
 
-    for (var key in params)
-      if (params.hasOwnProperty(key))
-        this[key] = params[key];
+    assign(this, params);
   }
 
   if (left)
@@ -163,6 +170,7 @@ Option.prototype = {
   short: '',
   long: '',
 
+  hot: false,
   required: false,
   minArgsCount: 0,
   maxArgsCount: 0,
@@ -185,10 +193,21 @@ function createOption(usage, description, opt_1, opt_2){
 
   if (arguments.length == 3)
   {
-    if (typeof opt_1 == 'function')
-      option.normalize = opt_1;
+    if (opt_1 && opt_1.constructor === Object)
+    {
+      for (var key in opt_1)
+        if (key == 'normalize' ||
+            key == 'defValue' ||
+            key == 'hot')
+          option[key] = opt_1[key];
+    }
     else
-      option.defValue = opt_1;
+    {
+      if (typeof opt_1 == 'function')
+        option.normalize = opt_1;
+      else
+        option.defValue = opt_1;
+    }
   }
 
   if (arguments.length == 4)
@@ -251,9 +270,6 @@ function findVariants(obj, entry){
 function processArgs(command, args, suggest){
   function processOption(option, command){
     var params = [];
-
-    if (!option)
-      throw new ParseError('Unknown option name: ' + token);
 
     if (option.maxArgsCount)
     {
@@ -369,7 +385,7 @@ function processArgs(command, args, suggest){
         }
         else
         {
-          // sequence
+          // short options sequence
           for (var j = 1; j < token.length; j++)
           {
             option = command.short[token[j]];
@@ -449,6 +465,21 @@ function processArgs(command, args, suggest){
   return result;
 }
 
+function setFunctionFactory(name){
+  return function(fn){
+    var property = name + '_';
+
+    if (this[property] !== noop)
+      throw new ParseError('Method `' + name + '` could be invoked only once');
+
+    if (typeof fn != 'function')
+      throw new ParseError('Value for `' + name + '` method should be a function');
+
+    this[property] = fn;
+
+    return this;
+  }
+}
 
 /**
 * @class
@@ -491,6 +522,7 @@ Command.prototype = {
 
   description_: '',
   version_: '',
+  initContext_: noop,
   init_: noop,
   delegate_: noop,
   action_: noop,
@@ -552,15 +584,13 @@ Command.prototype = {
   },
   setOptions: function(values){
     for (var name in values)
-      if (values.hasOwnProperty(name) && this.hasOption(name))
+      if (hasOwnProperty.call(values, name) && this.hasOption(name))
         this.setOption(name, values[name]);
   },
   reset: function(){
     this.values = {};
 
-    for (var optionName in this.defaults_)
-      if (hasOwnProperty.call(this.defaults_, optionName))
-        this.values[optionName] = this.defaults_[optionName];
+    assign(this.values, this.defaults_);
   },
 
   command: function(nameOrCommand, params){
@@ -623,50 +653,11 @@ Command.prototype = {
     return this;
   },
 
-  init: function(fn){
-    if (this.init_ !== noop)
-      throw new ParseError('Init function for command could be set only once');
-
-    if (typeof fn != 'function')
-      throw new ParseError('Value for init should be a function');
-
-    this.init_ = fn;
-
-    return this;
-  },
-  args: function(fn){
-    if (this.args_ !== noop)
-      throw new ParseError('Arguments handler for command could be set only once');
-
-    if (typeof fn != 'function')
-      throw new ParseError('Value for arguments handler should be a function');
-
-    this.args_ = fn;
-
-    return this;
-  },
-  delegate: function(fn){
-    if (this.delegate_ !== noop)
-      throw new ParseError('Delegate function could be set only once');
-
-    if (typeof fn != 'function')
-      throw new ParseError('Value for delegate should be a function');
-
-    this.delegate_ = fn;
-
-    return this;
-  },
-  action: function(fn){
-    if (this.action_ !== noop)
-      throw new ParseError('Action for command could be set only once');
-
-    if (typeof fn != 'function')
-      throw new ParseError('Value for action should be a function');
-
-    this.action_ = fn;
-
-    return this;
-  },
+  init: setFunctionFactory('init'),
+  initContext: setFunctionFactory('initContext'),
+  args: setFunctionFactory('args'),
+  delegate: setFunctionFactory('delegate'),
+  action: setFunctionFactory('action'),
 
   parse: function(args, suggest){
     var suggestions;
@@ -690,7 +681,7 @@ Command.prototype = {
       return;
 
     var prevCommand;
-    var context = context || {};
+    var context = assign({}, context || this.initContext_());
     for (var i = 0; i < commands.length; i++)
     {
       var item = commands[i];
@@ -699,19 +690,33 @@ Command.prototype = {
       // reset command values
       command.reset();
       command.context = context;
+      command.root = this;
 
       if (prevCommand)
         prevCommand.delegate_(command);
+
+      // apply hot options
+      command.setOptions(
+        item.options.reduce(function(res, entry){
+          if (entry.option.hot)
+            res[entry.option.camelName] = entry.value;
+          return res;
+        }, {})
+      );
 
       command.init_(item.args);
 
       if (item.args.length)
         command.args_(item.args);
 
-      command.setOptions(item.options.reduce(function(res, optionItem){
-        res[optionItem.option.camelName] = optionItem.value;
-        return res;
-      }, {}));
+      // apply regular options
+      command.setOptions(
+        item.options.reduce(function(res, entry){
+          if (!entry.option.hot)
+            res[entry.option.camelName] = entry.value;
+          return res;
+        }, {})
+      );
 
       prevCommand = command;
     }
