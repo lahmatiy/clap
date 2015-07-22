@@ -140,8 +140,7 @@ var Option = function(usage, description){
   try {
     params = parseParams(left);
   } catch(e) {
-    console.log(e.message);
-    throw new ParseError('Bad paramenter description in usage for option: ' + usage);
+    throw new ParseError('Bad paramenter description in usage for option: ' + usage, e);
   }
 
   if (params)
@@ -549,8 +548,8 @@ Command.prototype = {
       values = fn(value);
 
       for (var name in values)
-        if (values.hasOwnProperty(name))
-          if (command.options.hasOwnProperty(name))
+        if (hasOwnProperty.call(values, name))
+          if (hasOwnProperty.call(command.options, name))
             command.setOption(name, values[name]);
           else
             command.values[name] = values[name];
@@ -563,7 +562,7 @@ Command.prototype = {
     return this;
   },
   hasOption: function(name){
-    return this.options.hasOwnProperty(name);
+    return hasOwnProperty.call(this.options, name);
   },
   hasOptions: function(){
     return Object.keys(this.options).length > 0;
@@ -733,13 +732,13 @@ Command.prototype = {
       values = {};
 
     for (var name in this.values)
-      if (this.values.hasOwnProperty(name))
-        result[name] = values.hasOwnProperty(name) && this.options.hasOwnProperty(name)
+      if (hasOwnProperty.call(this.values, name))
+        result[name] = hasOwnProperty.call(values, name) && hasOwnProperty(this.options, name)
           ? this.options[name].normalize.call(this, values[name])
           : this.values[name];
 
     for (var name in values)
-      if (values.hasOwnProperty(name) && !this.options.hasOwnProperty(name))
+      if (hasOwnProperty.call(values, name) && !hasOwnProperty.call(this.options, name))
         result[name] = values[name];
 
     return result;
