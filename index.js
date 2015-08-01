@@ -659,6 +659,11 @@ Command.prototype = {
   delegate: setFunctionFactory('delegate'),
   action: setFunctionFactory('action'),
 
+  extend: function(fn){
+    fn(this);
+    return this;
+  },
+
   parse: function(args, suggest){
     var suggestions;
 
