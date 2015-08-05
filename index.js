@@ -800,6 +800,14 @@ function showCommandHelp(command){
     }).join('\n');
   }
 
+  function args(command){
+    return command.params.args.map(function(arg){
+        return arg.required
+          ? '<' + arg.name + '>'
+          : '[' + arg.name + ']';
+      }).join(' ');
+  }
+
   function commandsHelp(){
     if (!command.hasCommands())
       return '';
@@ -807,10 +815,12 @@ function showCommandHelp(command){
     var maxNameLength = MIN_OFFSET - 2;
     var lines = Object.keys(command.commands).sort().map(function(name){
       var subcommand = command.commands[name];
+
       var line = {
-        name: chalk.green(name) +
-          (subcommand.hasOptions() ? ' [<options>]' : '') +
-          (subcommand._args && subcommand._args.length ? ' [<args>]' : ''),
+        name: chalk.green(name) + chalk.gray(
+          (subcommand.params ? ' ' + args(subcommand) : '')
+          // (subcommand.hasOptions() ? ' [options]' : '')
+        ),
         description: subcommand.description_ || ''
       };
 
@@ -877,8 +887,9 @@ function showCommandHelp(command){
   output.push(
     'Usage:\n\n  ' +
       chalk.cyan(commandsPath ? commandsPath.join(' ') : command.name) +
-      (command.hasOptions() ? ' [' + chalk.yellow('<options>') + ']' : '') +
-      (command.hasCommands() ? ' [' + chalk.green('<command>') + ']' : ''),
+      (command.params ? ' ' + chalk.magenta(args(command)) : '') +
+      (command.hasOptions() ? ' [' + chalk.yellow('options') + ']' : '') +
+      (command.hasCommands() ? ' [' + chalk.green('command') + ']' : ''),
     commandsHelp() +
     optionsHelp()
   );
