@@ -170,7 +170,7 @@ Option.prototype = {
   short: '',
   long: '',
 
-  hot: false,
+  beforeInit: false,
   required: false,
   minArgsCount: 0,
   maxArgsCount: 0,
@@ -198,8 +198,12 @@ function createOption(usage, description, opt_1, opt_2){
       for (var key in opt_1)
         if (key == 'normalize' ||
             key == 'defValue' ||
-            key == 'hot')
+            key == 'beforeInit')
           option[key] = opt_1[key];
+
+      // old name for `beforeInit` setting is `hot`
+      if (opt_1.hot)
+        option.beforeInit = true;
     }
     else
     {
@@ -700,10 +704,10 @@ Command.prototype = {
       if (prevCommand)
         prevCommand.delegate_(command);
 
-      // apply hot options
+      // apply beforeInit options
       command.setOptions(
         item.options.reduce(function(res, entry){
-          if (entry.option.hot)
+          if (entry.option.beforeInit)
             res[entry.option.camelName] = entry.value;
           return res;
         }, {})
@@ -717,7 +721,7 @@ Command.prototype = {
       // apply regular options
       command.setOptions(
         item.options.reduce(function(res, entry){
-          if (!entry.option.hot)
+          if (!entry.option.beforeInit)
             res[entry.option.camelName] = entry.value;
           return res;
         }, {})
