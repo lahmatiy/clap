@@ -1,4 +1,6 @@
-[![NPM version](https://badge.fury.io/js/clap.png)](http://badge.fury.io/js/clap) [![Build Status](https://travis-ci.org/lahmatiy/clap.png?branch=master)](https://travis-ci.org/lahmatiy/clap)
+[![NPM version](https://img.shields.io/npm/v/clap.svg)](https://www.npmjs.com/package/clap)
+[![Dependency Status](https://img.shields.io/david/lahmatiy/clap.svg)](https://david-dm.org/lahmatiy/clap)
+[![Build Status](https://travis-ci.org/lahmatiy/clap.png?branch=master)](https://travis-ci.org/lahmatiy/clap)
 
 # Clap.js
 
