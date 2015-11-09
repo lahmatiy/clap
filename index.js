@@ -639,7 +639,7 @@ Command.prototype = {
     this.version_ = version;
     this.option(
       usage || '-v, --version',
-      description || 'Output the version',
+      description || 'Output version',
       function(){
         console.log(this.version_);
         process.exit(0);
