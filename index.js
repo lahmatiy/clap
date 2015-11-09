@@ -41,10 +41,11 @@ function noop(){
   // nothing todo
 }
 
-function parseParams(str, multiple){
+function parseParams(str){
   // params [..<required>] [..[optional]]
   // <foo> - require
   // [foo] - optional
+  var tmp;
   var left = str.trim();
   var result = {
     minArgsCount: 0,
@@ -669,8 +670,6 @@ Command.prototype = {
   },
 
   parse: function(args, suggest){
-    var suggestions;
-
     if (!args)
       args = process.argv.slice(2);
 
@@ -850,7 +849,7 @@ function showCommandHelp(command){
       var option = command.long[name];
       var line = {
         name: option.usage
-          .replace(/^(?:-., |)/, function(m, short){
+          .replace(/^(?:-., |)/, function(m){
             return m || (hasShortOptions ? '    ' : '');
           })
           .replace(/(^|\s)(-[^\s,]+)/ig, function(m, p, flag){
