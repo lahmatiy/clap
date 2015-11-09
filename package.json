@@ -3,7 +3,7 @@
   "title": "Command line argument parser",
   "description": "Command line argument parser",
   "author": "Roman Dvornov <rdvornov@gmail.com>",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "keywords": [
     "cli",
     "command",
