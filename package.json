@@ -4,7 +4,7 @@
   "description": "Command line argument parser",
   "author": "Roman Dvornov <rdvornov@gmail.com>",
   "license": "MIT",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "keywords": [
     "cli",
     "command",
