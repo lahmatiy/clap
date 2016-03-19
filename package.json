@@ -28,7 +28,7 @@
     "chalk": "1.1.1"
   },
   "devDependencies": {
-    "mocha": "~1.17.1"
+    "mocha": "^2.4.5"
   },
   "scripts": {
     "test": "mocha test -R spec"
