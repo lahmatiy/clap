@@ -27,32 +27,32 @@ describe('command run', function(){
 
     it('with no aguments should only init top level command', function(){
       command.run([]);
-      assert.deepEqual(['init'], calls);
+      assert.deepEqual(calls, ['init']);
     });
 
     it('with one argument should init and arg top level command', function(){
       command.run(['foo']);
-      assert.deepEqual(['init', 'args'], calls);
+      assert.deepEqual(calls, ['init', 'args']);
     });
 
     it('with first argument as command should init both commands', function(){
       command.run(['nested']);
-      assert.deepEqual(['init', 'nested init'], calls);
+      assert.deepEqual(calls, ['init', 'nested init']);
     });
 
     it('should init and args both commands', function(){
       command.run(['foo', 'nested', 'bar']);
-      assert.deepEqual(['init', 'args', 'nested init', 'nested args'], calls);
+      assert.deepEqual(calls, ['init', 'args', 'nested init', 'nested args']);
     });
 
     it('should init and args top level command but only init nested', function(){
       command.run(['foo', 'nested']);
-      assert.deepEqual(['init', 'args', 'nested init'], calls);
+      assert.deepEqual(calls, ['init', 'args', 'nested init']);
     });
 
     it('should init top level command and init and args nested command', function(){
       command.run(['nested', 'bar']);
-      assert.deepEqual(['init', 'nested init', 'nested args'], calls);
+      assert.deepEqual(calls, ['init', 'nested init', 'nested args']);
     });
   });
 
@@ -85,11 +85,11 @@ describe('command run', function(){
     });
     it('should treat first argument as value', function(){
       command.run(['nested']);
-      assert(action, 1);
+      assert.equal(action, '1');
     });
     it('should run nested action', function(){
       command.run(['one', 'nested', 'two']);
-      assert(action, 2);
+      assert.equal(action, '2');
     });
   });
 });
