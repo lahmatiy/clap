@@ -280,7 +280,17 @@ function processArgs(command, args, suggest){
     {
       for (var j = 0; j < option.maxArgsCount; j++)
       {
+        var suggestPoint = suggest && i + 1 + j >= args.length - 1;
         var nextToken = args[i + 1];
+
+        // TODO: suggestions for options
+        if (suggestPoint)
+        {
+          // search for suggest
+          noSuggestions = true;
+          i = args.length;
+          return;
+        }
 
         if (!nextToken || nextToken[0] == '-')
           break;
@@ -311,6 +321,8 @@ function processArgs(command, args, suggest){
   };
   var result = [resultToken];
 
+  var suggestStartsWith = '';
+  var noSuggestions = false;
   var collectArgs = false;
   var commandArgs = [];
   var noOptionsYet = true;
@@ -329,12 +341,10 @@ function processArgs(command, args, suggest){
       continue;
     }
 
-    if (suggestPoint)
+    if (suggestPoint && (token == '--' || token == '-' || token[0] != '-'))
     {
-      if (token == '')
-        break; // returns long option & command list outside the loop
-      if (token == '-' || token == '--')
-        return findVariants(command, '--');
+      suggestStartsWith = token;
+      break; // returns long option & command list outside the loop
     }
 
     if (token == '--')
@@ -451,10 +461,10 @@ function processArgs(command, args, suggest){
 
   if (suggest)
   {
-    if (collectArgs)
-      return;
+    if (collectArgs || noSuggestions)
+      return [];
 
-    return findVariants(command, '');
+    return findVariants(command, suggestStartsWith);
   }
   else
   {
