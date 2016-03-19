@@ -665,7 +665,7 @@ Command.prototype = {
   action: setFunctionFactory('action'),
 
   extend: function(fn){
-    fn(this);
+    fn.apply(null, [this].concat(Array.prototype.slice.call(arguments, 1)));
     return this;
   },
 
