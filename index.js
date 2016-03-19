@@ -543,6 +543,7 @@ Command.prototype = {
   delegate_: noop,
   action_: noop,
   args_: noop,
+  end_: null,
 
   option: function(usage, description, opt_1, opt_2){
     addOptionToCommand(this, createOption.apply(null, arguments));
@@ -632,11 +633,15 @@ Command.prototype = {
     {
       // create new one if not exists
       subcommand = command || new Command(name, params);
+      subcommand.end_ = this;
       this.commands[name] = subcommand;
       this.suggestions.push(name);
     }
 
     return subcommand;
+  },
+  end: function() {
+    return this.end_;
   },
   hasCommands: function(){
     return Object.keys(this.commands).length > 0;

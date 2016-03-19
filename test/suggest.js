@@ -31,11 +31,10 @@ describe('suggest', function(){
       .option('--bar', 'nested option 2')
       .option('--baz', 'nested option 3');
 
-  var bar = command.command('bar', '[arg2]');
-
-  bar.command('baz');
-  bar.command('qux');
-  bar.option('--test', 'test option');
+  var bar = command.command('bar', '[arg2]')
+    .command('baz').end()
+    .command('qux').end()
+    .option('--test', 'test option');
 
   it('should suggest commands and options when no input', function() {
     assert.deepEqual(command.parse([], true), getSuggestions(''));
