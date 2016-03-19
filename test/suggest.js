@@ -24,17 +24,16 @@ describe('suggest', function(){
     .option('-b, --bar', 'bar')
     .option('--required-arg <arg>', 'option with required argument')
     .option('--optional-arg <arg>', 'option with optional argument')
-
-  command
     .command('foo')
       .option('--foo', 'nested option 1')
       .option('--bar', 'nested option 2')
-      .option('--baz', 'nested option 3');
-
-  var bar = command.command('bar', '[arg2]')
-    .command('baz').end()
-    .command('qux').end()
-    .option('--test', 'test option');
+      .option('--baz', 'nested option 3')
+      .end()
+    .command('bar', '[arg2]')
+      .command('baz').end()
+      .command('qux').end()
+      .option('--test', 'test option')
+      .end();
 
   it('should suggest commands and options when no input', function() {
     assert.deepEqual(command.parse([], true), getSuggestions(''));
