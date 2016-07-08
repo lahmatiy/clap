@@ -293,7 +293,12 @@ function processArgs(command, args, suggest){
         }
 
         if (!nextToken || nextToken[0] == '-')
+        {
+          if (option.defValue)
+            params.push(option.defValue);
+
           break;
+        }
 
         params.push(args[++i]);
       }
