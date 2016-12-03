@@ -8,6 +8,14 @@ describe('one arg options', function(){
     command = cli.create();
   });
 
+  it('normalize', function(){
+    command
+      .option('--option <arg>', 'description', function(value){ return isNaN(value) ? 0 : value; }, 1);
+
+    var res = command.normalize({ option: 'bad value' });
+    assert(res.option === 0);
+  });
+
   describe('required option', function(){
     it('should not be in values by default', function(){
       command
