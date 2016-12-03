@@ -8,14 +8,6 @@ describe('boolean options', function(){
     command = cli.create();
   });
 
-  it('normalize', function(){
-    command
-      .option('--option', 'description', Boolean);
-
-    var res = command.normalize({ option: 'bad value' });
-    assert(res.option === true);
-  });
-
   describe('positive', function(){
     it('should be false by default', function(){
       command
