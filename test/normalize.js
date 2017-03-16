@@ -23,4 +23,12 @@ describe('normalize', function(){
     var res = command.normalize({ option: 'bad value' });
     assert(res.option === 0);
   });
+
+  it('option with no default value and argument should be set', function(){
+    command
+      .option('--option <value>', 'description');
+
+    var res = command.normalize({ option: 'ok' });
+    assert(res.option === 'ok');
+  });
 });
