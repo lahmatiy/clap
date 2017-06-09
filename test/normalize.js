@@ -24,6 +24,14 @@ describe('normalize', function(){
     assert(res.option === 0);
   });
 
+  it('multi option', function(){
+    command
+      .option('--option <arg1> [arg2]', 'description', function(value, oldValue){ return (oldValue || []).concat(value); });
+
+    command.run(['--option', 'foo', 'bar', '--option', 'baz']);
+    assert.deepEqual(command.values.option, ['foo', 'bar', 'baz']);
+  });
+
   it('option with no default value and argument should be set', function(){
     command
       .option('--option <value>', 'description');
