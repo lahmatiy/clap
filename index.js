@@ -729,7 +729,7 @@ Command.prototype = {
       command.init_(item.args);
 
       if (item.args.length)
-        command.args_(item.args);
+        command.args_.apply(command.args_, item.args);
 
       // apply regular options
       item.options.forEach(function(entry){
