@@ -1,3 +1,8 @@
+## 1.2.2 (September 18, 2017)
+
+- Fixed context passed to `Command#args()`, now it's a command as expected (#10)
+- Fixed consuming of literal arguments that wrongly concating with other arguments (i.e. anything going after `--` concats with arguments before `--`)
+
 ## 1.2.1 (September 18, 2017)
 
 - Fixed multi value option processing (@tyanas & @smelukov, #9)
