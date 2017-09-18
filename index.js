@@ -352,6 +352,8 @@ function processArgs(command, args, suggest){
 
     if (token == '--')
     {
+      resultToken.args = commandArgs;
+      commandArgs = [];
       noOptionsYet = false;
       collectArgs = true;
       continue;
