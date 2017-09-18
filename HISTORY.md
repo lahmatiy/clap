@@ -1,3 +1,7 @@
+## 1.2.1 (September 18, 2017)
+
+- Fixed multi value option processing (@tyanas & @smelukov, #9)
+
 ## 1.2.0 (June 13, 2017)
 
 - Improved multi value option processing (@smelukov, #7)
