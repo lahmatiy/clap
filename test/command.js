@@ -45,7 +45,7 @@ describe('command run', function(){
     it('with one argument should init and arg top level command', function(){
       command.run(['foo']);
       assert.deepEqual(sliceCallValues('name'), ['initContext', 'init', 'args']);
-      assert.deepEqual(sliceCallValues('arguments'), [[], [['foo']], ['foo']]);
+      assert.deepEqual(sliceCallValues('arguments'), [[], [['foo']], [['foo']]]);
     });
 
     it('with first argument as command should init both commands', function(){
@@ -57,19 +57,19 @@ describe('command run', function(){
       command.run(['foo', 'nested', 'bar']);
       assert.deepEqual(sliceCallValues('name'), ['initContext', 'init', 'args', 'nested init', 'nested args']);
       assert.deepEqual(sliceCallValues('this'), [command, command, command, nestedCommand, nestedCommand]);
-      assert.deepEqual(sliceCallValues('arguments'), [[], [['foo']], ['foo'], [['bar']], ['bar']]);
+      assert.deepEqual(sliceCallValues('arguments'), [[], [['foo']], [['foo']], [['bar']], [['bar']]]);
     });
 
     it('should init and args top level command but only init nested', function(){
       command.run(['foo', 'nested']);
       assert.deepEqual(sliceCallValues('name'), ['initContext', 'init', 'args', 'nested init']);
-      assert.deepEqual(sliceCallValues('arguments'), [[], [['foo']], ['foo'], [[]]]);
+      assert.deepEqual(sliceCallValues('arguments'), [[], [['foo']], [['foo']], [[]]]);
     });
 
     it('should init top level command and init and args nested command', function(){
       command.run(['nested', 'bar', 'baz']);
       assert.deepEqual(sliceCallValues('name'), ['initContext', 'init', 'nested init', 'nested args']);
-      assert.deepEqual(sliceCallValues('arguments'), [[], [[]], [['bar', 'baz']], ['bar', 'baz']]);
+      assert.deepEqual(sliceCallValues('arguments'), [[], [[]], [['bar', 'baz']], [['bar', 'baz']]]);
     });
   });
 
