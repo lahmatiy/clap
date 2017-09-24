@@ -171,6 +171,14 @@ describe('one arg options', function(){
       });
     });
 
+    it('should use default value if arg is not specified', function(){
+      command
+        .option('--option [arg]', 'description', 'foo');
+
+      command.run(['--option']);
+      assert(command.values.option === 'foo');
+    });
+
     it('#setOption should wrap new value', function(){
       command
         .option('--option [arg]', 'description', function(value){ return value * 2 });
