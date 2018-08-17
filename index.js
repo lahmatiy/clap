@@ -829,7 +829,7 @@ function showCommandHelp(command){
       var subcommand = command.commands[name];
 
       var line = {
-        name: chalk.green(name) + chalk.gray(
+        name: colors.green(name) + colors.gray(
           (subcommand.params ? ' ' + args(subcommand) : '')
           // (subcommand.hasOptions() ? ' [options]' : '')
         ),
@@ -866,7 +866,7 @@ function showCommandHelp(command){
             return m || (hasShortOptions ? '    ' : '');
           })
           .replace(/(^|\s)(-[^\s,]+)/ig, function(m, p, flag){
-            return p + chalk.yellow(flag);
+            return p + colors.yellow(flag);
           }),
         description: option.description
       };
@@ -889,19 +889,19 @@ function showCommandHelp(command){
   }
 
   var output = [];
-  var chalk = require('chalk');
+  var colors = require('ansi-colors');
 
-  chalk.enabled = module.exports.color && process.stdout.isTTY;
+  colors.enabled = module.exports.color && process.stdout.isTTY;
 
   if (command.description_)
     output.push(command.description_ + '\n');
 
   output.push(
     'Usage:\n\n  ' +
-      chalk.cyan(commandsPath ? commandsPath.join(' ') : command.name) +
-      (command.params ? ' ' + chalk.magenta(args(command)) : '') +
-      (command.hasOptions() ? ' [' + chalk.yellow('options') + ']' : '') +
-      (command.hasCommands() ? ' [' + chalk.green('command') + ']' : ''),
+      colors.cyan(commandsPath ? commandsPath.join(' ') : command.name) +
+      (command.params ? ' ' + colors.magenta(args(command)) : '') +
+      (command.hasOptions() ? ' [' + colors.yellow('options') + ']' : '') +
+      (command.hasCommands() ? ' [' + colors.green('command') + ']' : ''),
     commandsHelp() +
     optionsHelp()
   );
