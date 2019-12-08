@@ -3,9 +3,7 @@ var cli = require('../lib');
 
 describe('suggest', function() {
     function getSuggestions(startWith) {
-        return all.filter(function(name) {
-            return name.substr(0, startWith.length) === startWith;
-        });
+        return all.filter(name => name.startsWith(startWith)).sort();
     }
 
     var all = [
@@ -62,7 +60,7 @@ describe('suggest', function() {
     });
 
     it('should suggest matched commands and options of subcommands when no input', function() {
-        assert.deepEqual(command.parse(['bar', ''], true), ['--help', 'baz', 'qux', '--test']);
+        assert.deepEqual(command.parse(['bar', ''], true), ['--help', '--test', 'baz', 'qux']);
     });
 
     it('should suggest matched commands of subcommands', function() {
@@ -70,8 +68,8 @@ describe('suggest', function() {
     });
 
     it('should suggest options of subcommands', function() {
-        assert.deepEqual(command.parse(['foo', '-'], true), ['--help', '--foo', '--bar', '--baz']);
-        assert.deepEqual(command.parse(['foo', '--'], true), ['--help', '--foo', '--bar', '--baz']);
+        assert.deepEqual(command.parse(['foo', '-'], true), ['--bar', '--baz', '--foo', '--help']);
+        assert.deepEqual(command.parse(['foo', '--'], true), ['--bar', '--baz', '--foo', '--help']);
     });
 
     it('should suggest matched options of subcommands', function() {

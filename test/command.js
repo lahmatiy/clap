@@ -328,6 +328,7 @@ describe('command run', function() {
                 .command('test', '[qux]', {
                     infoOptionAction: res => output = res
                 })
+                .description('Test description')
                 .option('-f, --foo', 'Foo')
                 .option('--bar <baz>', 'Bar')
                 .command('nested')
@@ -335,6 +336,8 @@ describe('command run', function() {
                 .run(['--help']);
 
             assert.equal(output, [
+                'Test description',
+                '',
                 'Usage:',
                 '',
                 '    \u001b[36mtest\u001b[39m \u001b[35m[qux]\u001b[39m [\u001b[33moptions\u001b[39m] [\u001b[32mcommand\u001b[39m]',
