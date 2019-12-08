@@ -35,7 +35,7 @@ describe('command run', function() {
                 .args(regCall('nested args'));
         });
 
-        it('with no aguments should only init top level command', function() {
+        it('with no arguments should only init top level command', function() {
             command.run([]);
             assert.deepEqual(sliceCallValues('name'), ['initContext', 'init']);
         });
@@ -184,7 +184,7 @@ describe('command run', function() {
         });
     });
 
-    describe.only('help', () => {
+    describe('help', () => {
         it('should show help', () => {
             var output;
 
@@ -235,6 +235,34 @@ describe('command run', function() {
             ].join('\n'));
         });
 
+        it('should show help for nested command', () => {
+            var output;
+
+            cli
+                .create('test', '[qux]')
+                .option('-f, --foo', 'Foo')
+                .command('nested', '[nested-arg]', {
+                    infoOptionAction: res => output = res
+                })
+                .option('--bar <baz>', 'Bar')
+                .end()
+                .run(['nested', '--help']);
+
+            require('fs').writeFileSync('1.s', output, 'utf8');
+
+            assert.equal(output, [
+                'Usage:',
+                '',
+                '    \u001b[36mtest nested\u001b[39m \u001b[35m[nested-arg]\u001b[39m [\u001b[33moptions\u001b[39m]',
+                '',
+                'Options:',
+                '',
+                '        \u001b[33m--bar\u001b[39m <baz>            Bar',
+                '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m                 Output usage information',
+                ''
+            ].join('\n'));
+        });
+
         it('should not define default help when defaultHelp in config is falsy', function() {
             var command = cli.create('test', false, {
                 defaultHelp: false
@@ -244,7 +272,7 @@ describe('command run', function() {
         });
     });
 
-    describe.only('version', () => {
+    describe('version', () => {
         it('should show version when specified', () => {
             var output;
 
