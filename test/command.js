@@ -25,7 +25,7 @@ describe('command run', function() {
 
         beforeEach(function() {
             calls = [];
-            command = cli.create('test', '[arg1]')
+            command = cli.command('test', '[arg1]')
                 .initContext(regCall('initContext'))
                 .init(regCall('init'))
                 .args(regCall('args'));
@@ -71,13 +71,11 @@ describe('command run', function() {
         });
     });
 
-    describe('', function() {});
-
     describe('action()', function() {
         it('should have an expected input', function() {
             var calls = [];
             var command = cli
-                .create('test', '[foo]')
+                .command('test', '[foo]')
                 .option('--bar', 'bar option')
                 .action(function() {
                     calls.push({
@@ -102,7 +100,7 @@ describe('command run', function() {
         beforeEach(function() {
             calls = [];
             command = cli
-                .create('test', '[foo]')
+                .command('test', '[foo]')
                 .delegate(function() {
                     calls.push({
                         name: 'delegate',
@@ -150,7 +148,7 @@ describe('command run', function() {
     describe('required argument', function() {
         var action;
         var command = cli
-            .create('test', '<arg1>')
+            .command('test', '<arg1>')
             .action(function() {
                 action = '1';
             });
@@ -188,7 +186,7 @@ describe('command run', function() {
         it('should show help', () => {
             var output;
 
-            cli.create('test', false, {
+            cli.command('test', false, {
                 infoOptionAction: res => output = res
             }).run(['--help']);
 
@@ -208,7 +206,7 @@ describe('command run', function() {
             var output;
 
             cli
-                .create('test', '[qux]', {
+                .command('test', '[qux]', {
                     infoOptionAction: res => output = res
                 })
                 .option('-f, --foo', 'Foo')
@@ -239,7 +237,7 @@ describe('command run', function() {
             var output;
 
             cli
-                .create('test', '[qux]')
+                .command('test', '[qux]')
                 .option('-f, --foo', 'Foo')
                 .command('nested', '[nested-arg]', {
                     infoOptionAction: res => output = res
@@ -264,7 +262,7 @@ describe('command run', function() {
         });
 
         it('should not define default help when defaultHelp in config is falsy', function() {
-            var command = cli.create('test', false, {
+            var command = cli.command('test', false, {
                 defaultHelp: false
             });
 
@@ -277,7 +275,7 @@ describe('command run', function() {
             var output;
 
             cli
-                .create('test', false, {
+                .command('test', false, {
                     infoOptionAction: res => output = res
                 })
                 .version('1.2.3')

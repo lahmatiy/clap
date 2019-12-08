@@ -20,7 +20,7 @@ describe('suggest', function() {
 
     /* eslint-disable indent */
     var command = cli
-        .create('test', '[arg1]')
+        .command('test', '[arg1]')
         .option('-f, --foo', 'foo')
         .option('-b, --bar', 'bar')
         .option('--required-arg <arg>', 'option with required argument')

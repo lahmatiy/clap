@@ -5,7 +5,7 @@ describe('boolean options', function() {
     var command;
 
     beforeEach(function() {
-        command = cli.create();
+        command = cli.command();
     });
 
     describe('positive', function() {

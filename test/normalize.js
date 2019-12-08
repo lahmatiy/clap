@@ -5,7 +5,7 @@ describe('normalize', function() {
     var command;
 
     beforeEach(function() {
-        command = cli.create();
+        command = cli.command();
     });
 
     it('boolean option', function() {

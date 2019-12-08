@@ -5,7 +5,7 @@ describe('one arg options', function() {
     var command;
 
     beforeEach(function() {
-        command = cli.create();
+        command = cli.command();
     });
 
     describe('required option', function() {

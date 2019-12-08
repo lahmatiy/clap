@@ -5,7 +5,7 @@ describe('names', function() {
     var command;
 
     beforeEach(function() {
-        command = cli.create();
+        command = cli.command();
     });
 
     it('bool option should be in values, options and long', function() {
