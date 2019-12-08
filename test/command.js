@@ -365,8 +365,6 @@ describe('command run', function() {
                 .end()
                 .run(['nested', '--help']);
 
-            require('fs').writeFileSync('1.s', output, 'utf8');
-
             assert.equal(output, [
                 'Usage:',
                 '',
