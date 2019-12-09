@@ -1,3 +1,16 @@
+## 2.0.0 (December 8, 2019)
+
+- Dropped support for Node < 8
+- Bumped deps to latest versions
+- Added config argument for Command and create function
+    - `defaultHelp` option to prevent adding `--`help option on command create
+    - `infoOptionAction` option to override action when info option involved (output to stdout and `exit(0)` by default)
+- Added `Command#infoOption()` method
+- Fixed failure on argv parsing when all types of values are passed (i.e. args & options & literal args)
+- Renamed `create()` method to `command()`
+- Removed `error()` method
+- Removed `confirm()` method
+
 ## 1.2.3 (September 20, 2017)
 
 - Rolled back passing params to `args()` back as array
