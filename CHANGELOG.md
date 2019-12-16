@@ -1,3 +1,7 @@
+## next
+
+- Fixed multiline description output in help
+
 ## 2.0.0 (December 8, 2019)
 
 - Dropped support for Node < 8
