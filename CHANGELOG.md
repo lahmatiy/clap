@@ -1,4 +1,4 @@
-## next
+## 2.0.1 (December 16, 2019)
 
 - Fixed multiline description output in help
 
