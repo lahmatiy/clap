@@ -27,7 +27,8 @@
     "coveralls": "^3.0.7",
     "eslint": "^6.5.1",
     "mocha": "^6.2.2",
-    "nyc": "^14.1.0"
+    "nyc": "^14.1.0",
+    "test-console": "^1.1.0"
   },
   "scripts": {
     "lint": "eslint lib test",
