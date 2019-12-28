@@ -1,6 +1,7 @@
 ## next
 
 - Fixed `Command#showHelp()`, it's now logs help message in console instead of returning it
+- Restored wrongly removed `Command#extend()`
 
 ## 2.0.1 (December 16, 2019)
 
