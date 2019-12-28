@@ -89,13 +89,13 @@ describe('one arg options', function() {
             });
         });
 
-        it('#setOption should wrap new value', function() {
+        it('#setValue should normalizenew value', function() {
             command
                 .option('--option <arg>', 'description', function(value) {
                     return value * 2;
                 });
 
-            command.setOption('option', 123);
+            command.setValue('option', 123);
             assert(command.values.option === 246);
         });
     });
@@ -181,13 +181,13 @@ describe('one arg options', function() {
             });
         });
 
-        it('#setOption should wrap new value', function() {
+        it('#setValue should normalize new value', function() {
             command
                 .option('--option [arg]', 'description', function(value) {
                     return value * 2;
                 });
 
-            command.setOption('option', 123);
+            command.setValue('option', 123);
             assert(command.values.option === 246);
         });
     });

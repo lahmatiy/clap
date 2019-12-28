@@ -26,7 +26,7 @@ describe('normalize', function() {
         assert(res.option === 0);
     });
 
-    it('multi option', function() {
+    it('multi arg option', function() {
         command
             .option('--option <arg1> [arg2]', 'description', function(value, oldValue) {
                 return (oldValue || []).concat(value);
@@ -38,9 +38,35 @@ describe('normalize', function() {
 
     it('option with no default value and argument should be set', function() {
         command
-            .option('--option <value>', 'description');
+            .option('--option <value>');
 
         var res = command.normalize({ option: 'ok' });
         assert(res.option === 'ok');
+    });
+
+    it('should ignore unknown keys', function() {
+        command
+            .option('--option <value>');
+
+        var res = command.normalize({ foo: 'ok' });
+        assert.deepEqual(res, { });
+    });
+
+    it('general test', function() {
+        command
+            .option('--foo <value>', '', Number)
+            .option('--bar [value]')
+            .option('--with-default [x]', '', { defValue: 'default' })
+            .option('--bool');
+
+        var res = command.normalize({
+            foo: '123',
+            option: 'ok'
+        });
+        assert.deepEqual(res, {
+            foo: 123,
+            withDefault: 'default',
+            bool: false
+        });
     });
 });

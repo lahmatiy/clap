@@ -2,6 +2,22 @@
 
 - Fixed `Command#showHelp()`, it's now logs help message in console instead of returning it
 - Restored wrongly removed `Command#extend()`
+- Renamed `Command#setOptions()` into `Command#setValues()`
+- Renamed `Command#setValues()` into `Command#setValue()`
+- Changed `Command#setValues(values, ignoreUnknown)` method to raise an exception unless second argument is truthy
+- Changed `Command#setValue(name, value, ignoreUnknown)` to take `ignoreUnknown` as third parameter, to silently ignore unknown names instead of raising an error
+- Removed `Argument` class
+- Added `Params` class
+- Changed `Option` to store params info as `Option#params`, it always an object even if no params
+- Changed `Command` to store params info (as `Command#params`) even if no params
+- Reworked `Command#shortcut()` method:
+    - Shortcut method invokes after option value is set
+    - Pass normalized value to shortcut method
+    - Ignore unknown keys
+- Changed `Command#normalize()`
+    - Command's values no longer involved to produce a result
+    - Fixed value normalization
+    - Ignore unknown keys
 
 ## 2.0.1 (December 16, 2019)
 

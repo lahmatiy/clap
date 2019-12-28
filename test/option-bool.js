@@ -41,18 +41,6 @@ describe('boolean options', function() {
             });
         });
 
-        it('process function should receive true', function() {
-            var actionValue;
-            command
-                .option('--bool', 'description', function(value) {
-                    actionValue = value;
-                });
-
-            command.run(['--bool']);
-
-            assert(actionValue === true);
-        });
-
         it('process function result should be ignored', function() {
             command
                 .option('--bool', 'description', function() {
@@ -97,18 +85,6 @@ describe('boolean options', function() {
             assert.throws(function() {
                 command.run(['--bool']);
             });
-        });
-
-        it('process function should receive false', function() {
-            var actionValue;
-            command
-                .option('--no-bool', 'description', function(value) {
-                    actionValue = value;
-                });
-
-            command.run(['--no-bool']);
-
-            assert(actionValue === false);
         });
 
         it('process function result should be ignored', function() {
