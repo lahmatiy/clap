@@ -1,4 +1,5 @@
 var assert = require('assert');
+var stdout = require('test-console').stdout;
 var cli = require('../lib');
 
 describe('command run', function() {
@@ -442,6 +443,30 @@ describe('command run', function() {
             });
 
             assert.equal(command.hasOption('help'), false);
+        });
+
+        it('should show help message when Command#showHelp called', function() {
+            var inspect = stdout.inspect();
+
+            var command = cli
+                .command('test', '[qux]')
+                .option('-f, --foo', 'Foo');
+
+            command.showHelp();
+            inspect.restore();
+
+            assert.equal(inspect.output.join(''), [
+                'Usage:',
+                '',
+                '    \u001b[36mtest\u001b[39m \u001b[35m[qux]\u001b[39m [\u001b[33moptions\u001b[39m]',
+                '',
+                'Options:',
+                '',
+                '    \u001b[33m-f\u001b[39m, \u001b[33m--foo\u001b[39m                  Foo',
+                '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m                 Output usage information',
+                '',
+                ''
+            ].join('\n'));
         });
     });
 
