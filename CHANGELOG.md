@@ -23,6 +23,8 @@
     - Fixed value normalization
     - Ignore unknown keys
 - Removed `Command#infoOptionAction` and `infoOptionAction` option for `Command` constructor
+- Added `Command#messageRef()` and `Option#messageRef()` methods
+- Changed `Command#command()` to raise an exception when subcommand name already in use
 
 ## 2.0.1 (December 16, 2019)
 
