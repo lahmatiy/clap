@@ -8,13 +8,20 @@ describe('one arg options', function() {
         command = cli.command();
     });
 
-    describe('required option', function() {
+    describe('required param', function() {
         it('should not be in values by default', function() {
             command
                 .option('--option <arg>');
 
             assert('option' in command.values === false);
             assert(command.hasOption('option'));
+        });
+
+        it('should store default value', function() {
+            command
+                .option('--option <arg>', 'description', 123);
+
+            assert(command.values.option === 123);
         });
 
         it('default value should be wrapped by normalize function', function() {
@@ -93,13 +100,20 @@ describe('one arg options', function() {
         });
     });
 
-    describe('optional option', function() {
+    describe('optional param', function() {
         it('should not be in values by default', function() {
             command
                 .option('--option [arg]');
 
             assert('option' in command.values === false);
             assert(command.hasOption('option'));
+        });
+
+        it('should store default value', function() {
+            command
+                .option('--option [arg]', 'description', 123);
+
+            assert(command.values.option === 123);
         });
 
         it('default value should be wrapped by normalize function', function() {
