@@ -1,17 +1,18 @@
 var assert = require('assert');
+var stdout = require('test-console').stdout;
 var cli = require('../lib');
 
 describe('command run', function() {
-    it('should output version when specified', () => {
-        var output;
+    var inspect;
+    beforeEach(() => inspect = stdout.inspect());
+    afterEach(() => inspect.restore());
 
+    it('should output version when specified', () => {
         cli
-            .command('test', false, {
-                infoOptionAction: res => output = res
-            })
+            .command('test', false)
             .version('1.2.3')
             .run(['--version']);
 
-        assert.equal(output, '1.2.3');
+        assert.equal(inspect.output, '1.2.3\n');
     });
 });

@@ -22,6 +22,7 @@
     - Command's values no longer involved to produce a result
     - Fixed value normalization
     - Ignore unknown keys
+- Removed `Command#infoOptionAction` and `infoOptionAction` option for `Command` constructor
 
 ## 2.0.1 (December 16, 2019)
 
