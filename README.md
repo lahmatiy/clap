@@ -60,6 +60,7 @@ myCommand
     .shortcutOption(usage, description, handler, ...options)
     .command(nameOrCommand, params, config)
     .extend(fn, ...options)
+    .clone(deep)
     .end()
 
     // argv processing handlers
@@ -68,6 +69,10 @@ myCommand
     .args(args)
     .delegate(nextCommand)
     .action(args, literalArgs)
+
+    // run
+    .parse(argv, context)
+    .run(argv, context)
 
     // utils
     .setValue(name, value, ignoreUnknown)
@@ -78,7 +83,7 @@ myCommand
     .hasCommands()
     .hasOption(name)
     .hasOptions()
-    .showHelp()
+    .outputHelp()
 ```
 
 ### .option(usage, description, ...options)
