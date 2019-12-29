@@ -1,12 +1,12 @@
 var assert = require('assert');
 var cli = require('../lib');
 
-describe('Command#shortcut()', () => {
+describe('Command#shortcutOption()', () => {
     it('basic', () => {
         const command = cli.command('test')
             .option('--foo [foo]', 'Foo', Number)
             .option('--no-bar', 'Bar')
-            .shortcut('--baz [x]', 'Baz', function(x) {
+            .shortcutOption('--baz [x]', 'Baz', function(x) {
                 return {
                     foo: x,
                     bar: Boolean(Number(x)),

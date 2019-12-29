@@ -56,7 +56,7 @@ describe('normalize', function() {
         command
             .option('--foo <value>', '', Number)
             .option('--bar [value]')
-            .option('--with-default [x]', '', { defValue: 'default' })
+            .option('--with-default [x]', '', { value: 'default' })
             .option('--bool');
 
         var res = command.normalize({

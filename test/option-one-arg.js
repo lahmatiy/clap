@@ -17,13 +17,6 @@ describe('one arg options', function() {
             assert(command.hasOption('option'));
         });
 
-        it('should store default value', function() {
-            command
-                .option('--option <arg>', 'description', 123);
-
-            assert(command.values.option === 123);
-        });
-
         it('default value should be wrapped by normalize function', function() {
             command
                 .option('--option <arg>', 'description', function(value) {
@@ -109,20 +102,13 @@ describe('one arg options', function() {
             assert(command.hasOption('option'));
         });
 
-        it('should store default value', function() {
-            command
-                .option('--option [arg]', 'description', 123);
-
-            assert(command.values.option === 123);
-        });
-
         it('default value should be wrapped by normalize function', function() {
             command
                 .option('--option [arg]', 'description', function(value) {
                     return value * 2;
                 }, 123);
 
-            assert(command.values.option === 246);
+            assert.equal(command.values.option, 246);
         });
 
         it('should not be in values when normalize function preset but no default value', function() {

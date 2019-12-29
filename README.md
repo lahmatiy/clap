@@ -46,6 +46,62 @@ myCommand
             //...
 ```
 
+## API
+
+### Command
+
+```
+.command()
+    // definition
+    .version(value)
+    .description(value)
+    .option(usage, description, ...options)
+    .actionOption(usage, description, action)
+    .shortcutOption(usage, description, handler, ...options)
+    .command(nameOrCommand, params, config)
+    .extend(fn, ...options)
+    .end()
+
+    // argv processing handlers
+    .initContext()
+    .init(args)
+    .args(args)
+    .delegate(nextCommand)
+    .action(args, literalArgs)
+
+    // utils
+    .setValue(name, value, ignoreUnknown)
+    .setValues(values, ignoreUnknown)
+    .reset()
+    .normalize(values)
+    .hasCommand(name)
+    .hasCommands()
+    .hasOption(name)
+    .hasOptions()
+    .showHelp()
+```
+
+### .option(usage, description, ...options)
+
+There are two usage:
+
+```
+.option(usage, description, normalize, value)
+.option(usage, description, options)
+```
+
+Where `options`:
+
+```
+{
+    value: any,            // default value
+    normalize: (value, oldValue) => { ... }, // any value for option is passing through this function and its result stores as option value
+    shortcut: (value, oldValue) => { ... },  // for shortcut options, the handler is executed after the value is set, and its result (an object) is used as a source of values for other options
+    beforeInit: boolean,   // set a value before command's init handler
+    action: () => { ... }  // for an action option, which breaks regular args processing and preform and action (e.g. show help or version)
+}
+```
+
 ## License
 
 MIT

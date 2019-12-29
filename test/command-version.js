@@ -2,7 +2,7 @@ var assert = require('assert');
 var cli = require('../lib');
 
 describe('command run', function() {
-    it('should show version when specified', () => {
+    it('should output version when specified', () => {
         var output;
 
         cli

@@ -2,14 +2,18 @@
 
 - Fixed `Command#showHelp()`, it's now logs help message in console instead of returning it
 - Restored wrongly removed `Command#extend()`
-- Renamed `Command#setOptions()` into `Command#setValues()`
-- Renamed `Command#setValues()` into `Command#setValue()`
+- Renamed `Command`'s methods:
+    - `infoOption()` -> `actionOption()`
+    - `shortcut()` -> `shortcutOption()`
+    - `setOptions()` -> `setValues()`
+    - `setValues()` -> `setValue()`
 - Changed `Command#setValues(values, ignoreUnknown)` method to raise an exception unless second argument is truthy
 - Changed `Command#setValue(name, value, ignoreUnknown)` to take `ignoreUnknown` as third parameter, to silently ignore unknown names instead of raising an error
 - Removed `Argument` class
 - Added `Params` class
 - Changed `Option` to store params info as `Option#params`, it always an object even if no params
 - Changed `Command` to store params info (as `Command#params`) even if no params
+- Added `Command#hasCommand()` method
 - Reworked `Command#shortcut()` method:
     - Shortcut method invokes after option value is set
     - Pass normalized value to shortcut method
