@@ -26,6 +26,7 @@
 - Added `Command#messageRef()` and `Option#messageRef()` methods
 - Changed `Command#command()` to raise an exception when subcommand name already in use
 - Added `Command#clone()` method
+- Removed exposed `color` option
 
 ## 2.0.1 (December 16, 2019)
 
