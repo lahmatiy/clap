@@ -85,12 +85,12 @@ describe('Command help', () => {
         assert.equal(command.hasOption('help'), false);
     });
 
-    it('should show help message when Command#showHelp called', function() {
+    it('should show help message when Command#outputHelp called', function() {
         var command = cli
             .command('test', '[qux]')
             .option('-f, --foo', 'Foo');
 
-        command.showHelp();
+        command.outputHelp();
 
         assert.equal(inspect.output, [
             'Usage:',
