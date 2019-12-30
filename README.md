@@ -64,20 +64,19 @@ myCommand
     .end()
 
     // argv processing handlers
-    .initContext()
-    .init(args)
-    .args(args)
-    .delegate(nextCommand)
-    .action(args, literalArgs)
+    .init(command, context)
+    .prepare(context)
+    .action(context)
 
     // run
-    .parse(argv, context)
-    .run(argv, context)
+    .parse(argv, suggest)
+    .run(argv)
 
     // utils
     .setValue(name, value, ignoreUnknown)
     .setValues(values, ignoreUnknown)
     .reset()
+    .createOptionValues()
     .normalize(values)
     .hasCommand(name)
     .hasCommands()
@@ -102,7 +101,6 @@ Where `options`:
     value: any,            // default value
     normalize: (value, oldValue) => { ... }, // any value for option is passing through this function and its result stores as option value
     shortcut: (value, oldValue) => { ... },  // for shortcut options, the handler is executed after the value is set, and its result (an object) is used as a source of values for other options
-    beforeInit: boolean,   // set a value before command's init handler
     action: () => { ... }  // for an action option, which breaks regular args processing and preform and action (e.g. show help or version)
 }
 ```

@@ -19,7 +19,7 @@ describe('action()', function() {
         assert.equal(calls.length, 1);
         assert.notDeepEqual(calls[0].this, command);
         assert.deepEqual(calls[0].arguments, [{
-            commandPath: [],
+            commandPath: ['test'],
             options: { bar: false },
             args: ['abc'],
             literalArgs: ['rest', 'args']

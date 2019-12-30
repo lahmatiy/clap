@@ -16,7 +16,7 @@ describe('command run', function() {
             const actual = command.run([]);
 
             assert.deepStrictEqual(actual, {
-                commandPath: [],
+                commandPath: ['test'],
                 options: optionValues({
                     foo: false
                 }),
@@ -29,7 +29,7 @@ describe('command run', function() {
             const actual = command.run(['qux']);
 
             assert.deepStrictEqual(actual, {
-                commandPath: [],
+                commandPath: ['test'],
                 options: optionValues({
                     foo: false
                 }),
@@ -42,7 +42,7 @@ describe('command run', function() {
             const actual = command.run(['--foo', '--bar', '123']);
 
             assert.deepStrictEqual(actual, {
-                commandPath: [],
+                commandPath: ['test'],
                 options: optionValues({
                     foo: true,
                     bar: 123
@@ -56,7 +56,7 @@ describe('command run', function() {
             const actual = command.run(['--', '--one', '--two', '123']);
 
             assert.deepStrictEqual(actual, {
-                commandPath: [],
+                commandPath: ['test'],
                 options: optionValues({
                     foo: false
                 }),
@@ -69,7 +69,7 @@ describe('command run', function() {
             const actual = command.run(['qux', '--foo', '--bar', '123']);
 
             assert.deepStrictEqual(actual, {
-                commandPath: [],
+                commandPath: ['test'],
                 options: optionValues({
                     foo: true,
                     bar: 123
@@ -83,7 +83,7 @@ describe('command run', function() {
             const actual = command.run(['qux', '--', '--one', '--two', '123']);
 
             assert.deepStrictEqual(actual, {
-                commandPath: [],
+                commandPath: ['test'],
                 options: optionValues({
                     foo: false
                 }),
@@ -96,7 +96,7 @@ describe('command run', function() {
             const actual = command.run(['--foo', '--bar', '123', '--', '--one', '--two', '123']);
 
             assert.deepStrictEqual(actual, {
-                commandPath: [],
+                commandPath: ['test'],
                 options: optionValues({
                     foo: true,
                     bar: 123
@@ -110,7 +110,7 @@ describe('command run', function() {
             const actual = command.run(['qux', '--foo', '--bar', '123', '--', '--one', '--two', '123']);
 
             assert.deepStrictEqual(actual, {
-                commandPath: [],
+                commandPath: ['test'],
                 options: optionValues({
                     foo: true,
                     bar: 123
