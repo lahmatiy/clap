@@ -107,19 +107,19 @@ Where `options`:
 
 ### Args processing
 
-- init(command)  // before arguments parsing
+- init(command, context)  // before arguments parsing
 - invoke action option and exit if any
 - apply option values
-- prepare(values, context) // after arguments parsing
+- prepare(context) // after arguments parsing
     - switch to next command -> command is prescending
-        - init(...)
+        - init(command, context)
         - invoke action option and exit if any
         - apply option values
-        - prepare(values, context) // after arguments parsing
+        - prepare(context) // after arguments parsing
             - switch to next command
                 - ...
-            - action(values, context) -> command is target
-    - action(values, context) -> command is target
+            - action(context) -> command is target
+    - action(context) -> command is target
 
 ## License
 
