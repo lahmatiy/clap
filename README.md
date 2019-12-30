@@ -73,11 +73,7 @@ myCommand
     .run(argv)
 
     // utils
-    .setValue(name, value, ignoreUnknown)
-    .setValues(values, ignoreUnknown)
-    .reset()
     .createOptionValues()
-    .normalize(values)
     .hasCommand(name)
     .hasCommands()
     .hasOption(name)
