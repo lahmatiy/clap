@@ -3,11 +3,11 @@ var cli = require('../lib');
 
 describe('init()/args()', function() {
     function regCall(name) {
-        return function() {
+        return function(...args) {
             calls.push({
-                name: name,
+                name,
                 this: this,
-                arguments: [].slice.call(arguments)
+                arguments: args
             });
         };
     }
@@ -19,53 +19,30 @@ describe('init()/args()', function() {
     }
 
     var command;
-    var nestedCommand;
     var calls;
 
     beforeEach(function() {
         calls = [];
         command = cli.command('test', '[arg1]')
-            .initContext(regCall('initContext'))
             .init(regCall('init'))
-            .args(regCall('args'));
-        nestedCommand = command.command('nested', '[arg2] [arg3]')
-            .initContext(regCall('nested initContext'))
+            .prepare(regCall('prepare'));
+        command.command('nested', '[arg2] [arg3]')
             .init(regCall('nested init'))
-            .args(regCall('nested args'));
+            .prepare(regCall('nested prepare'));
     });
 
-    it('with no arguments should only init top level command', function() {
+    it('with no arguments should init/prepare top level command only', function() {
         command.run([]);
-        assert.deepEqual(sliceCallValues('name'), ['initContext', 'init']);
+        assert.deepEqual(sliceCallValues('name'), ['init', 'prepare']);
     });
 
-    it('with one argument should init and arg top level command', function() {
+    it('with one argument should init and prepare top level command', function() {
         command.run(['foo']);
-        assert.deepEqual(sliceCallValues('name'), ['initContext', 'init', 'args']);
-        assert.deepEqual(sliceCallValues('arguments'), [[], [['foo']], [['foo']]]);
+        assert.deepEqual(sliceCallValues('name'), ['init', 'prepare']);
     });
 
-    it('with first argument as command should init both commands', function() {
+    it('with first argument as command should init/prepare both commands', function() {
         command.run(['nested']);
-        assert.deepEqual(sliceCallValues('name'), ['initContext', 'init', 'nested init']);
-    });
-
-    it('should init and args both commands', function() {
-        command.run(['foo', 'nested', 'bar']);
-        assert.deepEqual(sliceCallValues('name'), ['initContext', 'init', 'args', 'nested init', 'nested args']);
-        assert.deepEqual(sliceCallValues('this'), [command, command, command, nestedCommand, nestedCommand]);
-        assert.deepEqual(sliceCallValues('arguments'), [[], [['foo']], [['foo']], [['bar']], [['bar']]]);
-    });
-
-    it('should init and args top level command but only init nested', function() {
-        command.run(['foo', 'nested']);
-        assert.deepEqual(sliceCallValues('name'), ['initContext', 'init', 'args', 'nested init']);
-        assert.deepEqual(sliceCallValues('arguments'), [[], [['foo']], [['foo']], [[]]]);
-    });
-
-    it('should init top level command and init and args nested command', function() {
-        command.run(['nested', 'bar', 'baz']);
-        assert.deepEqual(sliceCallValues('name'), ['initContext', 'init', 'nested init', 'nested args']);
-        assert.deepEqual(sliceCallValues('arguments'), [[], [[]], [['bar', 'baz']], [['bar', 'baz']]]);
+        assert.deepEqual(sliceCallValues('name'), ['init', 'prepare', 'nested init', 'nested prepare']);
     });
 });

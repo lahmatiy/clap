@@ -3,14 +3,10 @@ var cli = require('../lib');
 
 describe('short options', function() {
     describe('sequence of boolean options', function() {
-        var actual;
         var command = cli.command('test')
             .option('-f, --foo', 'Foo')
             .option('-b, --bar', 'Bar')
-            .option('-x, --baz', 'Baz')
-            .action(function() {
-                actual = this.values;
-            });
+            .option('-x, --baz', 'Baz');
 
         [
             { test: '-f', expected: { foo: true, bar: false, baz: false } },
@@ -19,8 +15,8 @@ describe('short options', function() {
             { test: '-xfbfx', expected: { foo: true, bar: true, baz: true } }
         ].forEach(testcase =>
             it(testcase.test, () => {
-                command.run([testcase.test]);
-                assert.deepEqual(testcase.expected, actual);
+                const actual = command.run([testcase.test]);
+                assert.deepEqual(testcase.expected, actual.options);
             })
         );
     });

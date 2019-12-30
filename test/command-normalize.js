@@ -32,8 +32,8 @@ describe('normalize', function() {
                 return (oldValue || []).concat(value);
             });
 
-        command.run(['--option', 'foo', 'bar', '--option', 'baz']);
-        assert.deepEqual(command.values.option, ['foo', 'bar', 'baz']);
+        const { options } = command.run(['--option', 'foo', 'bar', '--option', 'baz']);
+        assert.deepEqual(options.option, ['foo', 'bar', 'baz']);
     });
 
     it('option with no default value and argument should be set', function() {

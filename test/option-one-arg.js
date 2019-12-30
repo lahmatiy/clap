@@ -13,7 +13,7 @@ describe('one arg options', function() {
             command
                 .option('--option <arg>');
 
-            assert('option' in command.values === false);
+            assert.deepEqual(command.values, {});
             assert(command.hasOption('option'));
         });
 
@@ -21,7 +21,7 @@ describe('one arg options', function() {
             command
                 .option('--option <arg>', 'description', 123);
 
-            assert(command.values.option === 123);
+            assert.strictEqual(command.values.option, 123);
         });
 
         it('default value should be wrapped by normalize function', function() {
@@ -30,7 +30,7 @@ describe('one arg options', function() {
                     return value * 2;
                 }, 123);
 
-            assert(command.values.option === 246);
+            assert.strictEqual(command.values.option, 246);
         });
 
         it('should not be in values when normalize function preset but no default value', function() {
@@ -39,25 +39,31 @@ describe('one arg options', function() {
                     return 123;
                 });
 
-            assert('option' in command.values === false);
+            assert.deepEqual(command.values, {});
         });
 
         it('should read only one argument', function() {
-            var ok = false;
+            let ok = false;
+            let values;
+
             command
                 .option('--option <arg>', 'description')
+                .prepare(function({ options }) {
+                    values = options;
+                })
                 .command('test')
                 .action(function() {
                     ok = true;
                 });
 
             command.run(['--option', '1', 'test']);
-            assert(command.values.option === '1');
-            assert(ok === true);
+            assert.strictEqual(values.option, '1');
+            assert.strictEqual(ok, true);
         });
 
         it('should ignore commands', function() {
-            var ok = true;
+            let ok = true;
+
             command
                 .option('--option <arg>', 'description')
                 .command('test')
@@ -65,9 +71,9 @@ describe('one arg options', function() {
                     ok = false;
                 });
 
-            command.run(['--option', 'test']);
-            assert(command.values.option === 'test');
-            assert(ok === true);
+            const { options } = command.run(['--option', 'test']);
+            assert.strictEqual(ok, true);
+            assert.strictEqual(options.option, 'test');
         });
 
         it('should be exception if arg is not specified (no more arguments)', function() {
@@ -96,7 +102,7 @@ describe('one arg options', function() {
                 });
 
             command.setValue('option', 123);
-            assert(command.values.option === 246);
+            assert.strictEqual(command.values.option, 246);
         });
     });
 
@@ -105,7 +111,7 @@ describe('one arg options', function() {
             command
                 .option('--option [arg]');
 
-            assert('option' in command.values === false);
+            assert.deepEqual(command.values, {});
             assert(command.hasOption('option'));
         });
 
@@ -113,7 +119,7 @@ describe('one arg options', function() {
             command
                 .option('--option [arg]', 'description', 123);
 
-            assert(command.values.option === 123);
+            assert.strictEqual(command.values.option, 123);
         });
 
         it('default value should be wrapped by normalize function', function() {
@@ -122,7 +128,7 @@ describe('one arg options', function() {
                     return value * 2;
                 }, 123);
 
-            assert.equal(command.values.option, 246);
+            assert.strictEqual(command.values.option, 246);
         });
 
         it('should not be in values when normalize function preset but no default value', function() {
@@ -131,25 +137,31 @@ describe('one arg options', function() {
                     return 123;
                 });
 
-            assert('option' in command.values === false);
+            assert.deepEqual(command.values, {});
         });
 
         it('should read only one argument', function() {
-            var ok = false;
+            let ok = false;
+            let values;
+
             command
                 .option('--option [arg]', 'description')
+                .prepare(function({ options }) {
+                    values = options;
+                })
                 .command('test')
                 .action(function() {
                     ok = true;
                 });
 
             command.run(['--option', '1', 'test']);
-            assert(command.values.option === '1');
-            assert(ok === true);
+            assert.strictEqual(ok, true);
+            assert.strictEqual(values.option, '1');
         });
 
         it('should ignore commands', function() {
-            var ok = true;
+            let ok = true;
+
             command
                 .option('--option [arg]', 'description')
                 .command('test')
@@ -157,9 +169,9 @@ describe('one arg options', function() {
                     ok = false;
                 });
 
-            command.run(['--option', 'test']);
-            assert(command.values.option === 'test');
-            assert(ok === true);
+            const { options } = command.run(['--option', 'test']);
+            assert.strictEqual(ok, true);
+            assert.strictEqual(options.option, 'test');
         });
 
         it('should not be exception if arg is not specified (no more arguments)', function() {
@@ -188,7 +200,7 @@ describe('one arg options', function() {
                 });
 
             command.setValue('option', 123);
-            assert(command.values.option === 246);
+            assert.strictEqual(command.values.option, 246);
         });
     });
 });

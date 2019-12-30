@@ -12,20 +12,17 @@ describe('Command#shortcutOption()', () => {
                     bar: Boolean(Number(x)),
                     qux: 'xxx'
                 };
-            }, x => x + x)
-            .action(function() {
-                return this.values;
-            });
+            }, x => x + x);
 
-        assert.deepEqual(command.run([]), {
+        assert.deepEqual(command.run([]).options, {
             bar: true
         });
-        assert.deepEqual(command.run(['--baz', '5']), {
+        assert.deepEqual(command.run(['--baz', '5']).options, {
             bar: true,
             baz: '55',
             foo: 55
         });
-        assert.deepEqual(command.run(['--baz', '0']), {
+        assert.deepEqual(command.run(['--baz', '0']).options, {
             bar: false,
             baz: '00',
             foo: 0

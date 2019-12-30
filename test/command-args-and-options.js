@@ -1,120 +1,120 @@
-var assert = require('assert');
-var cli = require('../lib');
+const assert = require('assert');
+const cli = require('../lib');
+const optionValues = values => Object.assign(Object.create(null), values);
 
 describe('command run', function() {
     describe('args and options', function() {
         var command;
-        var collectedValues;
 
         beforeEach(function() {
-            collectedValues = null;
             command = cli.command('test', '[foo]')
                 .option('--foo', 'Foo')
-                .option('--bar <number>', 'Bar')
-                .action(function(args, literalArgs) {
-                    collectedValues = {
-                        values: this.values,
-                        args,
-                        literalArgs
-                    };
-                });
+                .option('--bar <number>', 'Bar', Number);
         });
 
         it('no arguments', function() {
-            command.run([]);
+            const actual = command.run([]);
 
-            assert.deepEqual(collectedValues, {
-                values: {
+            assert.deepStrictEqual(actual, {
+                commandPath: [],
+                options: optionValues({
                     foo: false
-                },
+                }),
                 args: [],
-                literalArgs: []
+                literalArgs: null
             });
         });
 
         it('args', function() {
-            command.run(['qux']);
+            const actual = command.run(['qux']);
 
-            assert.deepEqual(collectedValues, {
-                values: {
+            assert.deepStrictEqual(actual, {
+                commandPath: [],
+                options: optionValues({
                     foo: false
-                },
+                }),
                 args: ['qux'],
-                literalArgs: []
+                literalArgs: null
             });
         });
 
         it('options', function() {
-            command.run(['--foo', '--bar', '123']);
+            const actual = command.run(['--foo', '--bar', '123']);
 
-            assert.deepEqual(collectedValues, {
-                values: {
+            assert.deepStrictEqual(actual, {
+                commandPath: [],
+                options: optionValues({
                     foo: true,
                     bar: 123
-                },
+                }),
                 args: [],
-                literalArgs: []
+                literalArgs: null
             });
         });
 
         it('literal args', function() {
-            command.run(['--', '--one', '--two', '123']);
+            const actual = command.run(['--', '--one', '--two', '123']);
 
-            assert.deepEqual(collectedValues, {
-                values: {
+            assert.deepStrictEqual(actual, {
+                commandPath: [],
+                options: optionValues({
                     foo: false
-                },
+                }),
                 args: [],
                 literalArgs: ['--one', '--two', '123']
             });
         });
 
         it('args & options', function() {
-            command.run(['qux', '--foo', '--bar', '123']);
+            const actual = command.run(['qux', '--foo', '--bar', '123']);
 
-            assert.deepEqual(collectedValues, {
-                values: {
+            assert.deepStrictEqual(actual, {
+                commandPath: [],
+                options: optionValues({
                     foo: true,
                     bar: 123
-                },
+                }),
                 args: ['qux'],
-                literalArgs: []
+                literalArgs: null
             });
         });
 
         it('args & literal args', function() {
-            command.run(['qux', '--', '--one', '--two', '123']);
+            const actual = command.run(['qux', '--', '--one', '--two', '123']);
 
-            assert.deepEqual(collectedValues, {
-                values: {
+            assert.deepStrictEqual(actual, {
+                commandPath: [],
+                options: optionValues({
                     foo: false
-                },
+                }),
                 args: ['qux'],
                 literalArgs: ['--one', '--two', '123']
             });
         });
 
         it('options & literal args', function() {
-            command.run(['--foo', '--bar', '123', '--', '--one', '--two', '123']);
+            const actual = command.run(['--foo', '--bar', '123', '--', '--one', '--two', '123']);
 
-            assert.deepEqual(collectedValues, {
-                values: {
+            assert.deepStrictEqual(actual, {
+                commandPath: [],
+                options: optionValues({
                     foo: true,
                     bar: 123
-                },
+                }),
                 args: [],
                 literalArgs: ['--one', '--two', '123']
             });
         });
 
         it('args & options & literal args', function() {
-            command.run(['qux', '--foo', '--bar', '123', '--', '--one', '--two', '123']);
+            const actual = command.run(['qux', '--foo', '--bar', '123', '--', '--one', '--two', '123']);
 
-            assert.deepEqual(collectedValues, {
-                values: {
+            assert.deepStrictEqual(actual, {
+                commandPath: [],
+                options: optionValues({
                     foo: true,
                     bar: 123
-                },
+                }),
                 args: ['qux'],
                 literalArgs: ['--one', '--two', '123']
             });

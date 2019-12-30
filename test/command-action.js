@@ -7,17 +7,22 @@ describe('action()', function() {
         var command = cli
             .command('test', '[foo]')
             .option('--bar', 'bar option')
-            .action(function() {
+            .action(function(...args) {
                 calls.push({
                     this: this,
-                    arguments: [].slice.call(arguments)
+                    arguments: args
                 });
             });
 
         command.run(['abc', '--', 'rest', 'args']);
 
         assert.equal(calls.length, 1);
-        assert.equal(calls[0].this, command);
-        assert.deepEqual(calls[0].arguments, [['abc'], ['rest', 'args']]);
+        assert.notDeepEqual(calls[0].this, command);
+        assert.deepEqual(calls[0].arguments, [{
+            commandPath: [],
+            options: { bar: false },
+            args: ['abc'],
+            literalArgs: ['rest', 'args']
+        }]);
     });
 });

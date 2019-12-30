@@ -55,4 +55,13 @@ describe('Command#clone()', () => {
         clone.commands.foo.option('--extra', 'zzz');
         assert.deepEqual(clone, command);
     });
+
+    it('should apply handlers as expected', () => {
+        const actual = clone
+            .run(['--test-option']);
+
+        assert.deepEqual(actual.options, {
+            testOption: true
+        });
+    });
 });

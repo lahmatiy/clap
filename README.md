@@ -107,6 +107,22 @@ Where `options`:
 }
 ```
 
+### Args processing
+
+- init(command)  // before arguments parsing
+- invoke action option and exit if any
+- apply option values
+- prepare(values, context) // after arguments parsing
+    - switch to next command -> command is prescending
+        - init(...)
+        - invoke action option and exit if any
+        - apply option values
+        - prepare(values, context) // after arguments parsing
+            - switch to next command
+                - ...
+            - action(values, context) -> command is target
+    - action(values, context) -> command is target
+
 ## License
 
 MIT

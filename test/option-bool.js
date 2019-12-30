@@ -13,7 +13,8 @@ describe('boolean options', function() {
             command
                 .option('--bool');
 
-            assert(command.values.bool === false);
+            const { options } = command.run([]);
+            assert.strictEqual(options.bool, false);
         });
 
         it('should throw an exception if oposite option defined already', function() {
@@ -28,8 +29,8 @@ describe('boolean options', function() {
             command
                 .option('--bool');
 
-            command.run(['--bool']);
-            assert(command.values.bool === true);
+            const { options } = command.run(['--bool']);
+            assert.strictEqual(options.bool, true);
         });
 
         it('should throw an exception for inverted option', function() {
@@ -43,13 +44,10 @@ describe('boolean options', function() {
 
         it('process function result should be ignored', function() {
             command
-                .option('--bool', 'description', function() {
-                    return false;
-                });
+                .option('--bool', 'description', () => false);
 
-            command.run(['--bool']);
-
-            assert(command.values.bool === true);
+            const { options } = command.run(['--bool']);
+            assert.strictEqual(options.bool, true);
         });
     });
 
@@ -59,7 +57,8 @@ describe('boolean options', function() {
             command
                 .option('--no-bool');
 
-            assert(command.values.bool === true);
+            const { options } = command.run([]);
+            assert.strictEqual(options.bool, true);
         });
 
         it('should throw an exception if oposite option defined already', function() {
@@ -74,8 +73,8 @@ describe('boolean options', function() {
             command
                 .option('--no-bool');
 
-            command.run(['--no-bool']);
-            assert(command.values.bool === false);
+            const { options } = command.run(['--no-bool']);
+            assert.strictEqual(options.bool, false);
         });
 
         it('should throw an exception for non-inverted option', function() {
@@ -89,13 +88,10 @@ describe('boolean options', function() {
 
         it('process function result should be ignored', function() {
             command
-                .option('--no-bool', 'description', function() {
-                    return true;
-                });
+                .option('--no-bool', 'description', () => true);
 
-            command.run(['--no-bool']);
-
-            assert(command.values.bool === false);
+            const { options } = command.run(['--no-bool']);
+            assert.strictEqual(options.bool, false);
         });
     });
 });
