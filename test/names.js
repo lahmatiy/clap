@@ -6,52 +6,36 @@ describe('names', function() {
         const command = cli.command()
             .option('--bool');
 
-        assert('bool' in command.options);
-        assert('bool' in command.long);
+        assert([...command.options.keys()], ['--bool', 'bool']);
+        assert(command.hasOption('--bool'));
         assert(command.hasOption('bool'));
-
-        assert('no-bool' in command.options === false);
-        assert('no-bool' in command.long === false);
-        assert(command.hasOption('no-bool') === false);
     });
 
     it('inverted bool option should be in values and options as normal name and as is in long', function() {
         const command = cli.command()
             .option('--no-bool');
 
-        assert('bool' in command.options);
-        assert('no-bool' in command.long);
+        assert([...command.options.keys()], ['--no-bool', 'bool']);
+        assert(command.hasOption('--no-bool'));
         assert(command.hasOption('bool'));
-
-        assert('no-bool' in command.options === false);
-        assert('no-bool' in command.long === true);
-        assert(command.hasOption('no-bool') === false);
     });
 
     it('dasherized option should store as camelName in options', function() {
         const command = cli.command()
             .option('--bool-option');
 
-        assert('boolOption' in command.options);
-        assert('bool-option' in command.long);
+        assert([...command.options.keys()], ['--bool-option', 'boolOption']);
+        assert(command.hasOption('--bool-option'));
         assert(command.hasOption('boolOption'));
-
-        assert('bool-option' in command.options === false);
-        assert('boolOption' in command.long === false);
-        assert(command.hasOption('bool-option') === false);
     });
 
     it('non-bool option should have name as is', function() {
         const command = cli.command()
             .option('--no-bool <arg>');
 
-        assert('noBool' in command.options);
-        assert('no-bool' in command.long);
+        assert([...command.options.keys()], ['--no-bool', 'noBool']);
+        assert(command.hasOption('--no-bool'));
         assert(command.hasOption('noBool'));
-
-        assert('bool' in command.options === false);
-        assert('bool' in command.long === false);
-        assert(command.hasOption('bool') === false);
     });
 
     it('should be exception if no long form', function() {

@@ -16,7 +16,7 @@ describe('boolean options', function() {
                 () => cli.command()
                     .option('--no-bool')
                     .option('--bool'),
-                /Option name bool already in use by --no-bool/
+                /Option name "bool" already in use by --no-bool/
             );
         });
 
@@ -62,7 +62,7 @@ describe('boolean options', function() {
                 () => cli.command()
                     .option('--bool')
                     .option('--no-bool'),
-                /Option name bool already in use by --bool/
+                /Option name "bool" already in use by --bool/
             );
         });
 

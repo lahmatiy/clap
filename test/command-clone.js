@@ -49,10 +49,10 @@ describe('Command#clone()', () => {
     it('should be deep equal if add the same option to nested command with deep cloning', () => {
         clone = command.clone(true);
 
-        command.commands.foo.option('--extra', 'zzz');
+        command.getCommand('foo').option('--extra', 'zzz');
         assert.notDeepEqual(clone, command);
 
-        clone.commands.foo.option('--extra', 'zzz');
+        clone.getCommand('foo').option('--extra', 'zzz');
         assert.deepEqual(clone, command);
     });
 

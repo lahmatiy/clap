@@ -2,7 +2,8 @@
 
 - Restored wrongly removed `Command#extend()`
 - Added `Command#clone()` method
-- Added `Command#hasCommand()` method
+- Added `Command#hasCommand()`, `Command#getCommand(name)` and `Command#getCommands()` methods
+- Added `Command#getOption(name)` and `Command#getOptions()` methods
 - Added `Command#messageRef()` and `Option#messageRef()` methods
 - Changed `Command` to store params info (as `Command#params`) even if no params
 - Renamed `Command#infoOption()` method into `actionOption()`
@@ -20,6 +21,7 @@
 - Removed `Command#setOption()` method
 - Removed `Command#normalize()` method (use `createOptionValues()` instead)
 - Changed `Option` to store params info as `Option#params`, it always an object even if no params
+- Allowed a number for options's short name
 - Changed exports
     - Added `getCommandHelp()` function
     - Added `Params` class

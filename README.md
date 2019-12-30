@@ -4,7 +4,13 @@
 
 # Clap.js
 
-Argument parser for command-line interfaces. It primary target to large tool sets that provides a lot of subcommands. Support for argument coercion and completion makes task run much easer, even if you doesn't use CLI.
+A library for node.js to build command-line interfaces (CLI). It make simple CLI a trivia task, and complex tools with a lot of subcommands and specific features possible. Support for argument coercion and completion suggestion makes typing commands much easer.
+
+Inspired by [commander.js](https://github.com/tj/commander.js)
+
+Features:
+
+- TBD
 
 ## Usage
 
@@ -60,24 +66,28 @@ myCommand
     .shortcutOption(usage, description, handler, ...options)
     .command(nameOrCommand, params, config)
     .extend(fn, ...options)
-    .clone(deep)
     .end()
 
-    // argv processing handlers
+    // argv processing pipeline handlers
     .init(command, context)
     .prepare(context)
     .action(context)
 
-    // run
+    // parse/run methods
     .parse(argv, suggest)
     .run(argv)
 
-    // utils
+    // misc
+    .clone(deep)
     .createOptionValues()
     .hasCommand(name)
     .hasCommands()
+    .getCommand(name)
+    .getCommands()
     .hasOption(name)
     .hasOptions()
+    .getOption()
+    .getOptions()
     .outputHelp()
 ```
 
