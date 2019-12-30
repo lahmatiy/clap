@@ -1,10 +1,10 @@
-var assert = require('assert');
-var cli = require('../lib');
+const assert = require('assert');
+const cli = require('../lib');
 
 describe('action()', function() {
     it('should have an expected input', function() {
-        var calls = [];
-        var command = cli
+        const calls = [];
+        const command = cli
             .command('test', '[foo]')
             .option('--bar', 'bar option')
             .action(function(...args) {

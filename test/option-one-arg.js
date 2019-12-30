@@ -1,60 +1,55 @@
-var assert = require('assert');
-var cli = require('../lib');
+const assert = require('assert');
+const cli = require('../lib');
 
 describe('one arg options', function() {
-    var command;
-
-    beforeEach(function() {
-        command = cli.command();
-    });
-
     describe('required param', function() {
         it('should not be in values by default', function() {
-            command
+            const command = cli.command()
                 .option('--option <arg>');
 
-            assert.deepEqual(command.values, {});
+            const { options } = command.run([]);
+            assert.deepEqual(options, Object.create(null));
             assert(command.hasOption('option'));
         });
 
         it('should store default value', function() {
-            command
+            const command = cli.command()
                 .option('--option <arg>', 'description', 123);
 
-            assert.strictEqual(command.values.option, 123);
+            const { options } = command.run([]);
+            assert.strictEqual(options.option, 123);
         });
 
         it('default value should be wrapped by normalize function', function() {
-            command
-                .option('--option <arg>', 'description', function(value) {
-                    return value * 2;
-                }, 123);
+            const command = cli.command()
+                .option('--option <arg>', 'description', value => value * 2, 123);
 
-            assert.strictEqual(command.values.option, 246);
+            const { options } = command.run([]);
+            assert.strictEqual(options.option, 246);
         });
 
         it('should not be in values when normalize function preset but no default value', function() {
-            command
+            const command = cli.command()
                 .option('--option <arg>', 'description', function() {
                     return 123;
                 });
 
-            assert.deepEqual(command.values, {});
+            const { options } = command.run([]);
+            assert.deepEqual(options, Object.create(null));
         });
 
         it('should read only one argument', function() {
             let ok = false;
             let values;
 
-            command
+            const command = cli.command()
                 .option('--option <arg>', 'description')
                 .prepare(function({ options }) {
                     values = options;
                 })
                 .command('test')
-                .action(function() {
-                    ok = true;
-                });
+                .action(() => ok = true)
+                .end();
 
             command.run(['--option', '1', 'test']);
             assert.strictEqual(values.option, '1');
@@ -63,13 +58,11 @@ describe('one arg options', function() {
 
         it('should ignore commands', function() {
             let ok = true;
-
-            command
+            const command = cli.command()
                 .option('--option <arg>', 'description')
                 .command('test')
-                .action(function() {
-                    ok = false;
-                });
+                .action(() => ok = false)
+                .end();
 
             const { options } = command.run(['--option', 'test']);
             assert.strictEqual(ok, true);
@@ -77,82 +70,86 @@ describe('one arg options', function() {
         });
 
         it('should be exception if arg is not specified (no more arguments)', function() {
-            command
+            const command = cli.command()
                 .option('--option <arg>', 'description');
 
-            assert.throws(function() {
-                command.run(['--option']);
-            });
+            assert.throws(
+                () => command.run(['--option']),
+                /Option --option should be used with at least 1 argument\(s\)/
+            );
         });
 
         it('should be exception if arg is not specified (another option next)', function() {
-            command
+            const command = cli.command()
                 .option('--test')
                 .option('--option <arg>', 'description');
 
-            assert.throws(function() {
-                command.run(['--option', '--test']);
-            });
+            assert.throws(
+                () => command.run(['--option', '--test']),
+                /Option --option should be used with at least 1 argument\(s\)/
+            );
         });
 
         it('#setValue should normalizenew value', function() {
-            command
-                .option('--option <arg>', 'description', function(value) {
-                    return value * 2;
-                });
+            const command = cli.command()
+                .option('--option <arg>', 'description', value => value * 2);
 
-            command.setValue('option', 123);
-            assert.strictEqual(command.values.option, 246);
+            const { options } = command.run([]);
+            options.option = 123;
+            assert.strictEqual(options.option, 246);
         });
     });
 
     describe('optional param', function() {
         it('should not be in values by default', function() {
-            command
+            const command = cli.command()
                 .option('--option [arg]');
 
-            assert.deepEqual(command.values, {});
+            const { options } = command.run([]);
+            assert.deepEqual(options, Object.create(null));
             assert(command.hasOption('option'));
         });
 
         it('should store default value', function() {
-            command
+            const command = cli.command()
                 .option('--option [arg]', 'description', 123);
 
-            assert.strictEqual(command.values.option, 123);
+            const actual = command.run([]);
+            assert.strictEqual(actual.options.option, 123);
         });
 
         it('default value should be wrapped by normalize function', function() {
-            command
+            const command = cli.command()
                 .option('--option [arg]', 'description', function(value) {
                     return value * 2;
                 }, 123);
 
-            assert.strictEqual(command.values.option, 246);
+            const actual = command.run([]);
+            assert.strictEqual(actual.options.option, 246);
         });
 
         it('should not be in values when normalize function preset but no default value', function() {
-            command
+            const command = cli.command()
                 .option('--option [arg]', 'description', function() {
                     return 123;
                 });
 
-            assert.deepEqual(command.values, {});
+            const actual = command.run([]);
+            assert.deepStrictEqual(actual.options, Object.create(null));
         });
 
         it('should read only one argument', function() {
             let ok = false;
             let values;
 
-            command
+            const command = cli.command()
                 .option('--option [arg]', 'description')
                 .prepare(function({ options }) {
                     values = options;
                 })
                 .command('test')
-                .action(function() {
-                    ok = true;
-                });
+                .action(() => ok = true)
+                .end();
 
             command.run(['--option', '1', 'test']);
             assert.strictEqual(ok, true);
@@ -162,12 +159,11 @@ describe('one arg options', function() {
         it('should ignore commands', function() {
             let ok = true;
 
-            command
+            const command = cli.command()
                 .option('--option [arg]', 'description')
                 .command('test')
-                .action(function() {
-                    ok = false;
-                });
+                .action(() => ok = false)
+                .end();
 
             const { options } = command.run(['--option', 'test']);
             assert.strictEqual(ok, true);
@@ -175,7 +171,7 @@ describe('one arg options', function() {
         });
 
         it('should not be exception if arg is not specified (no more arguments)', function() {
-            command
+            const command = cli.command()
                 .option('--option [arg]', 'description');
 
             assert.doesNotThrow(function() {
@@ -184,7 +180,7 @@ describe('one arg options', function() {
         });
 
         it('should not be exception if arg is not specified (another option next)', function() {
-            command
+            const command = cli.command()
                 .option('--test')
                 .option('--option [arg]', 'description');
 
@@ -193,14 +189,13 @@ describe('one arg options', function() {
             });
         });
 
-        it('#setValue should normalize new value', function() {
-            command
-                .option('--option [arg]', 'description', function(value) {
-                    return value * 2;
-                });
+        it('set value to options should normalize new value', function() {
+            const command = cli.command()
+                .option('--option [arg]', 'description', value => value * 2);
 
-            command.setValue('option', 123);
-            assert.strictEqual(command.values.option, 246);
+            const { options } = command.run([]);
+            options.option = 123;
+            assert.strictEqual(options.option, 246);
         });
     });
 });

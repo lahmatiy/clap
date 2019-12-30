@@ -1,9 +1,9 @@
-var assert = require('assert');
-var stdout = require('test-console').stdout;
-var cli = require('../lib');
+const assert = require('assert');
+const stdout = require('test-console').stdout;
+const cli = require('../lib');
 
 describe('command run', function() {
-    var inspect;
+    let inspect;
     beforeEach(() => inspect = stdout.inspect());
     afterEach(() => inspect.restore());
 

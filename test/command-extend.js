@@ -1,5 +1,5 @@
-var assert = require('assert');
-var cli = require('../lib');
+const assert = require('assert');
+const cli = require('../lib');
 
 describe('Command#extend()', () => {
     it('basic', () => {

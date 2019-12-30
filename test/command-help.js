@@ -1,9 +1,9 @@
-var assert = require('assert');
-var stdout = require('test-console').stdout;
-var cli = require('../lib');
+const assert = require('assert');
+const stdout = require('test-console').stdout;
+const cli = require('../lib');
 
 describe('Command help', () => {
-    var inspect;
+    let inspect;
     beforeEach(() => inspect = stdout.inspect());
     afterEach(() => inspect.restore());
 
@@ -78,7 +78,7 @@ describe('Command help', () => {
     });
 
     it('should not define default help when defaultHelp in config is falsy', function() {
-        var command = cli.command('test', false, {
+        const command = cli.command('test', false, {
             defaultHelp: false
         });
 
@@ -86,7 +86,7 @@ describe('Command help', () => {
     });
 
     it('should show help message when Command#outputHelp called', function() {
-        var command = cli
+        const command = cli
             .command('test', '[qux]')
             .option('-f, --foo', 'Foo');
 

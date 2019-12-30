@@ -1,34 +1,31 @@
 ## next
 
-- Fixed `Command#showHelp()`, it's now logs help message in console instead of returning it
+- Added `Command#clone()` method
+- Added `Command#createOptionValues(values)` method
+- Added `Command#hasCommand()` method
+- Added `Command#messageRef()` and `Option#messageRef()` methods
 - Restored wrongly removed `Command#extend()`
-- Renamed `Command`'s methods:
-    - `infoOption()` -> `actionOption()`
-    - `shortcut()` -> `shortcutOption()`
-    - `setOptions()` -> `setValues()`
-    - `setValues()` -> `setValue()`
-- Changed `Command#setValues(values, ignoreUnknown)` method to raise an exception unless second argument is truthy
-- Changed `Command#setValue(name, value, ignoreUnknown)` to take `ignoreUnknown` as third parameter, to silently ignore unknown names instead of raising an error
-- Removed `Argument` class
-- Added `Params` class
+- Renamed `Command#infoOption()` method into `actionOption()`
+- Renamed `Command#shortcut()` method into `shortcutOption()`
+- Removed `Command#setOptions()` method
+- Removed `Command#setOption()` method
+- Removed `Command#normalize()` method use `createOptionValues()` instead
 - Changed `Option` to store params info as `Option#params`, it always an object even if no params
 - Changed `Command` to store params info (as `Command#params`) even if no params
-- Added `Command#hasCommand()` method
 - Reworked `Command#shortcut()` method:
     - Shortcut method invokes after option value is set
     - Pass normalized value to shortcut method
     - Ignore unknown keys
-- Changed `Command#normalize()`
-    - Command's values no longer involved to produce a result
-    - Fixed value normalization
-    - Ignore unknown keys
 - Removed `Command#infoOptionAction` and `infoOptionAction` option for `Command` constructor
-- Added `Command#messageRef()` and `Option#messageRef()` methods
 - Changed `Command#command()` to raise an exception when subcommand name already in use
-- Added `Command#clone()` method
-- Removed exposed `color` option
-- Exposed `getCommandHelp()` function
+- Fixed `Command#showHelp()`, it's now logs help message in console instead of returning it
 - Renamed `Command#showHelp()` into `Command#outputHelp()`
+- Changed exports
+    - Added `getCommandHelp()` function
+    - Added `Params` class
+    - Removed `Argument` class
+    - Removed `color` option
+
 
 ## 2.0.1 (December 16, 2019)
 

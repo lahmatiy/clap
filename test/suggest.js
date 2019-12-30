@@ -1,12 +1,12 @@
-var assert = require('assert');
-var cli = require('../lib');
+const assert = require('assert');
+const cli = require('../lib');
 
 describe('suggest', function() {
     function getSuggestions(startWith) {
         return all.filter(name => name.startsWith(startWith)).sort();
     }
 
-    var all = [
+    const all = [
         '--help',
         '--foo',
         '--bar',
@@ -17,7 +17,7 @@ describe('suggest', function() {
     ];
 
     /* eslint-disable indent */
-    var command = cli
+    const command = cli
         .command('test', '[arg1]')
         .option('-f, --foo', 'foo')
         .option('-b, --bar', 'bar')

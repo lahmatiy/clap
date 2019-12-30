@@ -1,9 +1,9 @@
-var assert = require('assert');
-var cli = require('../lib');
+const assert = require('assert');
+const cli = require('../lib');
 
 describe('short options', function() {
     describe('sequence of boolean options', function() {
-        var command = cli.command('test')
+        const command = cli.command('test')
             .option('-f, --foo', 'Foo')
             .option('-b, --bar', 'Bar')
             .option('-x, --baz', 'Baz');
@@ -22,7 +22,7 @@ describe('short options', function() {
     });
 
     describe('should throws when unknown short', function() {
-        var command = cli.command('test')
+        const command = cli.command('test')
             .option('-f, --foo', 'Foo')
             .option('-b, --bar', 'Bar');
 
@@ -37,7 +37,7 @@ describe('short options', function() {
     });
 
     it('should throws when non-boolean in sequence', function() {
-        var command = cli.command('test')
+        const command = cli.command('test')
             .option('-f, --foo', 'Foo')
             .option('-b, --bar <asd>', 'Bar');
 
