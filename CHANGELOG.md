@@ -1,17 +1,12 @@
 ## next
 
+- Restored wrongly removed `Command#extend()`
 - Added `Command#clone()` method
-- Added `Command#createOptionValues(values)` method
 - Added `Command#hasCommand()` method
 - Added `Command#messageRef()` and `Option#messageRef()` methods
-- Restored wrongly removed `Command#extend()`
+- Changed `Command` to store params info (as `Command#params`) even if no params
 - Renamed `Command#infoOption()` method into `actionOption()`
 - Renamed `Command#shortcut()` method into `shortcutOption()`
-- Removed `Command#setOptions()` method
-- Removed `Command#setOption()` method
-- Removed `Command#normalize()` method use `createOptionValues()` instead
-- Changed `Option` to store params info as `Option#params`, it always an object even if no params
-- Changed `Command` to store params info (as `Command#params`) even if no params
 - Reworked `Command#shortcut()` method:
     - Shortcut method invokes after option value is set
     - Pass normalized value to shortcut method
@@ -20,12 +15,16 @@
 - Changed `Command#command()` to raise an exception when subcommand name already in use
 - Fixed `Command#showHelp()`, it's now logs help message in console instead of returning it
 - Renamed `Command#showHelp()` into `Command#outputHelp()`
+- Added `Command#createOptionValues(values)` method
+- Removed `Command#setOptions()` method
+- Removed `Command#setOption()` method
+- Removed `Command#normalize()` method (use `createOptionValues()` instead)
+- Changed `Option` to store params info as `Option#params`, it always an object even if no params
 - Changed exports
     - Added `getCommandHelp()` function
     - Added `Params` class
     - Removed `Argument` class
     - Removed `color` option
-
 
 ## 2.0.1 (December 16, 2019)
 
