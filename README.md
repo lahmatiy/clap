@@ -107,25 +107,30 @@ Where `options`:
     value: any,            // default value
     normalize: (value, oldValue) => { ... }, // any value for option is passing through this function and its result stores as option value
     shortcut: (value, oldValue) => { ... },  // for shortcut options, the handler is executed after the value is set, and its result (an object) is used as a source of values for other options
-    action: () => { ... }  // for an action option, which breaks regular args processing and preform and action (e.g. show help or version)
+    action: () => { ... }, // for an action option, which breaks regular args processing and preform and action (e.g. show help or version)
+    config: boolean        // mark option is about config and should be applied before `applyConfig()`
 }
 ```
 
-### Args processing
+### Argv processing
 
-- init(command, context)  // before arguments parsing
-- invoke action option and exit if any
-- apply option values
-- prepare(context) // after arguments parsing
+- `init(command, context)`  // before arguments parsing
+    - invoke action option and exit if any
+- apply **config** options
+- `applyConfig(context)`
+- apply all the rest options
+- `prepareContext(context)` // after arguments parsing
     - switch to next command -> command is prescending
-        - init(command, context)
-        - invoke action option and exit if any
-        - apply option values
-        - prepare(context) // after arguments parsing
+        - `init(command, context)`
+            - invoke action option and exit if any
+        - apply **config** options
+        - `applyConfig(context)`
+        - apply all the rest options
+        - `prepareContext(context)` // after arguments parsing
             - switch to next command
                 - ...
-            - action(context) -> command is target
-    - action(context) -> command is target
+            - `action(context)` -> command is target
+    - `action(context)` -> command is target
 
 ## License
 

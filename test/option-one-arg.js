@@ -44,9 +44,7 @@ describe('one arg options', function() {
 
             const command = cli.command()
                 .option('--option <arg>', 'description')
-                .prepare(function({ options }) {
-                    values = options;
-                })
+                .finishContext(({ options }) => values = options)
                 .command('test')
                 .action(() => ok = true)
                 .end();
@@ -144,9 +142,7 @@ describe('one arg options', function() {
 
             const command = cli.command()
                 .option('--option [arg]', 'description')
-                .prepare(function({ options }) {
-                    values = options;
-                })
+                .finishContext(({ options }) => values = options)
                 .command('test')
                 .action(() => ok = true)
                 .end();

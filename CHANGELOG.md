@@ -22,6 +22,7 @@
 - Removed `Command#normalize()` method (use `createOptionValues()` instead)
 - Changed `Option` to store params info as `Option#params`, it always an object even if no params
 - Allowed a number for options's short name
+- Changed argv parse handlers to [`init()` -> `applyConfig()` -> `prepareContext()`]+ -> `action()`
 - Changed exports
     - Added `getCommandHelp()` function
     - Added `Params` class
