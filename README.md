@@ -81,13 +81,9 @@ myCommand
     // misc
     .clone(deep)
     .createOptionValues()
-    .hasCommand(name)
-    .hasCommands()
     .getCommand(name)
     .getCommands()
-    .hasOption(name)
-    .hasOptions()
-    .getOption()
+    .getOption(name)
     .getOptions()
     .outputHelp()
 ```

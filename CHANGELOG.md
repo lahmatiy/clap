@@ -3,7 +3,7 @@
 - Restored wrongly removed `Command#extend()`
 - Removed config argument for `Command`
 - Added `Command#clone()` method
-- Added `Command#hasCommand()`, `Command#getCommand(name)` and `Command#getCommands()` methods
+- Added `Command#getCommand(name)` and `Command#getCommands()` methods
 - Added `Command#getOption(name)` and `Command#getOptions()` methods
 - Added `Command#messageRef()` and `Option#messageRef()` methods
 - Added `Command#createOptionValues(values)` method
@@ -21,9 +21,13 @@
 - Changed `Command#command()` to raise an exception when subcommand name already in use
 - Removed `Command#setOptions()` method
 - Removed `Command#setOption()` method
+- Removed `Command#hasOptions()` method
+- Removed `Command#hasOption()` method
+- Removed `Command#hasCommands()` method
 - Removed `Command#normalize()` method (use `createOptionValues()` instead)
 - Changed `Option` to store params info as `Option#params`, it always an object even if no params
 - Added `Option#names()` method
+- Removed validation for subcommand name
 - Allowed a number for options's short name
 - Changed argv parse handlers to [`init()` -> `applyConfig()` -> `prepareContext()`]+ -> `action()`
 - Changed exports

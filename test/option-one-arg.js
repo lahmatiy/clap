@@ -9,7 +9,7 @@ describe('one arg options', function() {
 
             const { options } = command.run([]);
             assert.deepEqual(options, Object.create(null));
-            assert(command.hasOption('option'));
+            assert.notStrictEqual(command.getOption('option'), null);
         });
 
         it('should store default value', function() {
@@ -105,7 +105,7 @@ describe('one arg options', function() {
 
             const { options } = command.run([]);
             assert.deepEqual(options, Object.create(null));
-            assert(command.hasOption('option'));
+            assert.notStrictEqual(command.getOption('option'), null);
         });
 
         it('should store default value', function() {

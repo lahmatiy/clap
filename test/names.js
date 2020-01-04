@@ -7,8 +7,8 @@ describe('names', function() {
             .option('--bool');
 
         assert([...command.options.keys()], ['--bool', 'bool']);
-        assert(command.hasOption('--bool'));
-        assert(command.hasOption('bool'));
+        assert.notStrictEqual(command.getOption('--bool'), null);
+        assert.notStrictEqual(command.getOption('bool'), null);
     });
 
     it('inverted bool option should be in values and options as normal name and as is in long', function() {
@@ -16,8 +16,8 @@ describe('names', function() {
             .option('--no-bool');
 
         assert([...command.options.keys()], ['--no-bool', 'bool']);
-        assert(command.hasOption('--no-bool'));
-        assert(command.hasOption('bool'));
+        assert.notStrictEqual(command.getOption('--no-bool'), null);
+        assert.notStrictEqual(command.getOption('bool'), null);
     });
 
     it('dasherized option should store as camelName in options', function() {
@@ -25,8 +25,8 @@ describe('names', function() {
             .option('--bool-option');
 
         assert([...command.options.keys()], ['--bool-option', 'boolOption']);
-        assert(command.hasOption('--bool-option'));
-        assert(command.hasOption('boolOption'));
+        assert.notStrictEqual(command.getOption('--bool-option'), null);
+        assert.notStrictEqual(command.getOption('boolOption'), null);
     });
 
     it('non-bool option should have name as is', function() {
@@ -34,8 +34,8 @@ describe('names', function() {
             .option('--no-bool <arg>');
 
         assert([...command.options.keys()], ['--no-bool', 'noBool']);
-        assert(command.hasOption('--no-bool'));
-        assert(command.hasOption('noBool'));
+        assert.notStrictEqual(command.getOption('--no-bool'), null);
+        assert.notStrictEqual(command.getOption('noBool'), null);
     });
 
     it('should be exception if no long form', function() {
@@ -45,17 +45,17 @@ describe('names', function() {
         );
     });
 
-    it('#hasOption should not resolve option name by long form', function() {
+    it('#getOption() should not resolve option name by long form', function() {
         const command = cli.command()
             .option('--long-form');
 
-        assert(command.hasOption('long-form') === false);
+        assert.strictEqual(command.getOption('long-form'), null);
     });
 
-    it('#hasOption should resolve option name by camelName', function() {
+    it('#getOption() should resolve option name by camelName', function() {
         const command = cli.command()
             .option('--long-form');
 
-        assert(command.hasOption('longForm'));
+        assert.notStrictEqual(command.getOption('longForm'), null);
     });
 });

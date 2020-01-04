@@ -10,7 +10,7 @@ describe('Command help', () => {
     it('should remove default help when .help(false)', function() {
         const command = cli.command('test').help(false);
 
-        assert.equal(command.hasOption('help'), false);
+        assert.strictEqual(command.getOption('help'), null);
     });
 
     it('should show help', () => {
