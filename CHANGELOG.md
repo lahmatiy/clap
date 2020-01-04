@@ -1,10 +1,15 @@
 ## next
 
 - Restored wrongly removed `Command#extend()`
+- Removed config argument for `Command`
 - Added `Command#clone()` method
 - Added `Command#hasCommand()`, `Command#getCommand(name)` and `Command#getCommands()` methods
 - Added `Command#getOption(name)` and `Command#getOptions()` methods
 - Added `Command#messageRef()` and `Option#messageRef()` methods
+- Added `Command#createOptionValues(values)` method
+- Added `Command#help()` method similar to `Command#version()`, use `Command#help(false)` to disable default help action option
+- Fixed `Command#showHelp()`, it's now logs help message in console instead of returning it
+- Renamed `Command#showHelp()` into `Command#outputHelp()`
 - Changed `Command` to store params info (as `Command#params`) even if no params
 - Renamed `Command#infoOption()` method into `actionOption()`
 - Renamed `Command#shortcut()` method into `shortcutOption()`
@@ -14,13 +19,11 @@
     - Ignore unknown keys
 - Removed `Command#infoOptionAction` and `infoOptionAction` option for `Command` constructor
 - Changed `Command#command()` to raise an exception when subcommand name already in use
-- Fixed `Command#showHelp()`, it's now logs help message in console instead of returning it
-- Renamed `Command#showHelp()` into `Command#outputHelp()`
-- Added `Command#createOptionValues(values)` method
 - Removed `Command#setOptions()` method
 - Removed `Command#setOption()` method
 - Removed `Command#normalize()` method (use `createOptionValues()` instead)
 - Changed `Option` to store params info as `Option#params`, it always an object even if no params
+- Added `Option#names()` method
 - Allowed a number for options's short name
 - Changed argv parse handlers to [`init()` -> `applyConfig()` -> `prepareContext()`]+ -> `action()`
 - Changed exports

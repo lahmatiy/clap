@@ -59,8 +59,9 @@ myCommand
 ```
 .command()
     // definition
-    .version(value)
     .description(value)
+    .version(value, usage, description, action)
+    .help(usage, description, action)
     .option(usage, description, ...options)
     .actionOption(usage, description, action)
     .shortcutOption(usage, description, handler, ...options)

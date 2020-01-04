@@ -7,6 +7,12 @@ describe('Command help', () => {
     beforeEach(() => inspect = stdout.inspect());
     afterEach(() => inspect.restore());
 
+    it('should remove default help when .help(false)', function() {
+        const command = cli.command('test').help(false);
+
+        assert.equal(command.hasOption('help'), false);
+    });
+
     it('should show help', () => {
         cli.command('test', false).run(['--help']);
 
@@ -18,6 +24,26 @@ describe('Command help', () => {
             'Options:',
             '',
             '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m                 Output usage information',
+            '',
+            ''
+        ].join('\n'));
+    });
+
+    it('help with no short options', function() {
+        cli.command('test', false, { defaultHelp: false })
+            .help('--help')
+            .option('--foo', 'Foo')
+            .run(['--help']);
+
+        assert.equal(inspect.output, [
+            'Usage:',
+            '',
+            '    \u001b[36mtest\u001b[39m [\u001b[33moptions\u001b[39m]',
+            '',
+            'Options:',
+            '',
+            '    \u001b[33m--foo\u001b[39m                      Foo',
+            '    \u001b[33m--help\u001b[39m                     Output usage information',
             '',
             ''
         ].join('\n'));
@@ -75,14 +101,6 @@ describe('Command help', () => {
             '',
             ''
         ].join('\n'));
-    });
-
-    it('should not define default help when defaultHelp in config is falsy', function() {
-        const command = cli.command('test', false, {
-            defaultHelp: false
-        });
-
-        assert.equal(command.hasOption('help'), false);
     });
 
     it('should show help message when Command#outputHelp called', function() {
