@@ -23,7 +23,7 @@ describe('Command help', () => {
             '',
             'Options:',
             '',
-            '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m                 Output usage information',
+            '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m              Output usage information',
             '',
             ''
         ].join('\n'));
@@ -42,8 +42,8 @@ describe('Command help', () => {
             '',
             'Options:',
             '',
-            '    \u001b[33m--foo\u001b[39m                      Foo',
-            '    \u001b[33m--help\u001b[39m                     Output usage information',
+            '    \u001b[33m--foo\u001b[39m                   Foo',
+            '    \u001b[33m--help\u001b[39m                  Output usage information',
             '',
             ''
         ].join('\n'));
@@ -54,8 +54,11 @@ describe('Command help', () => {
             .command('test', '[qux]')
             .description('Test description')
             .option('-f, --foo', 'Foo')
-            .option('--bar <baz>', 'Bar')
+            .option('--bar <baz>', 'Bar', 8080)
             .command('nested')
+            .end()
+            .command('nested2')
+            .description('with description')
             .end()
             .run(['--help']);
 
@@ -68,13 +71,14 @@ describe('Command help', () => {
             '',
             'Commands:',
             '',
-            '    \u001b[32mnested\u001b[39m                     ',
+            '    \u001b[32mnested\u001b[39m                  ',
+            '    \u001b[32mnested2\u001b[39m                 with description',
             '',
             'Options:',
             '',
-            '        \u001b[33m--bar\u001b[39m <baz>            Bar',
-            '    \u001b[33m-f\u001b[39m, \u001b[33m--foo\u001b[39m                  Foo',
-            '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m                 Output usage information',
+            '        \u001b[33m--bar\u001b[39m <baz>         Bar',
+            '    \u001b[33m-f\u001b[39m, \u001b[33m--foo\u001b[39m               Foo',
+            '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m              Output usage information',
             '',
             ''
         ].join('\n'));
@@ -96,8 +100,8 @@ describe('Command help', () => {
             '',
             'Options:',
             '',
-            '        \u001b[33m--bar\u001b[39m <baz>            Bar',
-            '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m                 Output usage information',
+            '        \u001b[33m--bar\u001b[39m <baz>         Bar',
+            '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m              Output usage information',
             '',
             ''
         ].join('\n'));
@@ -117,8 +121,8 @@ describe('Command help', () => {
             '',
             'Options:',
             '',
-            '    \u001b[33m-f\u001b[39m, \u001b[33m--foo\u001b[39m                  Foo',
-            '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m                 Output usage information',
+            '    \u001b[33m-f\u001b[39m, \u001b[33m--foo\u001b[39m               Foo',
+            '    \u001b[33m-h\u001b[39m, \u001b[33m--help\u001b[39m              Output usage information',
             '',
             ''
         ].join('\n'));
