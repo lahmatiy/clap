@@ -72,7 +72,7 @@ describe('createOptionValues()', function() {
         const command = cli.command()
             .option('--foo <value>', '', Number)
             .option('--bar [value]')
-            .option('--with-default [x]', '', { value: 'default' })
+            .option('--with-default [x]', '', { default: 'default' })
             .option('--bool');
 
         assert.deepStrictEqual(
