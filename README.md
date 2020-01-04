@@ -63,18 +63,17 @@ myCommand
     .version(value, usage, description, action)
     .help(usage, description, action)
     .option(usage, description, ...options)
-    .actionOption(usage, description, action)
-    .shortcutOption(usage, description, handler, ...options)
     .command(nameOrCommand, params, config)
     .extend(fn, ...options)
     .end()
 
-    // argv processing pipeline handlers
+    // argv processing pipeline handler setters
     .init(command, context)
-    .prepare(context)
+    .applyConfig(context)
+    .prerareContenxt(context)
     .action(context)
 
-    // parse/run methods
+    // main methods
     .parse(argv, suggest)
     .run(argv)
 
@@ -101,7 +100,7 @@ Where `options`:
 
 ```
 {
-    value: any,            // default value
+    default: any,          // default value
     normalize: (value, oldValue) => { ... }, // any value for option is passing through this function and its result stores as option value
     shortcut: (value, oldValue) => { ... },  // for shortcut options, the handler is executed after the value is set, and its result (an object) is used as a source of values for other options
     action: () => { ... }, // for an action option, which breaks regular args processing and preform and action (e.g. show help or version)

@@ -11,13 +11,9 @@
 - Fixed `Command#showHelp()`, it's now logs help message in console instead of returning it
 - Renamed `Command#showHelp()` into `Command#outputHelp()`
 - Changed `Command` to store params info (as `Command#params`) even if no params
-- Renamed `Command#infoOption()` method into `actionOption()`
-- Renamed `Command#shortcut()` method into `shortcutOption()`
-- Reworked `Command#shortcut()` method:
-    - Shortcut method invokes after option value is set
-    - Pass normalized value to shortcut method
-    - Ignore unknown keys
-- Removed `Command#infoOptionAction` and `infoOptionAction` option for `Command` constructor
+- Removed `Command#infoOption()` method, use `action` in option's config instead, i.e. `option(usage, description, { action: ... })`
+- Removed `Command#infoOptionAction` and `infoOptionAction` option for `Command` constructor as well
+- Removed `Command#shortcut()` method, use `shortcut` in option's config instead, i.e. `option(usage, description, { shortcut: ... })`
 - Changed `Command#command()` to raise an exception when subcommand name already in use
 - Removed `Command#setOptions()` method
 - Removed `Command#setOption()` method
@@ -27,7 +23,7 @@
 - Removed `Command#normalize()` method (use `createOptionValues()` instead)
 - Changed `Option` to store params info as `Option#params`, it always an object even if no params
 - Added `Option#names()` method
-- Removed validation for subcommand name
+- Removed name validation for subcommands
 - Allowed a number for options's short name
 - Changed argv parse handlers to [`init()` -> `applyConfig()` -> `prepareContext()`]+ -> `action()`
 - Changed exports

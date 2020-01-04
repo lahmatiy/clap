@@ -6,13 +6,16 @@ describe('Command#shortcutOption()', () => {
         const command = cli.command('test')
             .option('--foo [foo]', 'Foo', Number)
             .option('--no-bar', 'Bar')
-            .shortcutOption('--baz [x]', 'Baz', function(x) {
-                return {
-                    foo: x,
-                    bar: Boolean(Number(x)),
-                    qux: 'xxx'
-                };
-            }, x => x + x);
+            .option('--baz [x]', 'Baz', {
+                normalize: x => x + x,
+                shortcut: function(x) {
+                    return {
+                        foo: x,
+                        bar: Boolean(Number(x)),
+                        qux: 'xxx'
+                    };
+                }
+            });
 
         assert.deepEqual(command.run([]).options, {
             bar: true
