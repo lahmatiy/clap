@@ -4,7 +4,7 @@
 
 # Clap.js
 
-A library for node.js to build command-line interfaces (CLI). It make simple CLI a trivia task, and complex tools with a lot of subcommands and specific features possible. Support for argument coercion and completion suggestion makes typing commands much easer.
+A library for node.js to build command-line interfaces (CLI). With its help, making a simple CLI application is a trivial task. It equally excels in complex tools with a lot of subcommands and specific features. This library supports argument coercion and completion suggestion — typing the commands is much easier.
 
 Inspired by [commander.js](https://github.com/tj/commander.js)
 
