@@ -38,7 +38,7 @@ describe('boolean options', function() {
             );
         });
 
-        it('process function result should be ignored', function() {
+        it('normalize function result should be ignored', function() {
             const command = cli.command()
                 .option('--bool', 'description', () => false);
 
@@ -84,7 +84,7 @@ describe('boolean options', function() {
             );
         });
 
-        it('process function result should be ignored', function() {
+        it('normalize function result should be ignored', function() {
             const command = cli.command()
                 .option('--no-bool', 'description', () => true);
 
