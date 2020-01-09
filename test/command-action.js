@@ -5,7 +5,7 @@ describe('action()', function() {
     it('should have an expected input', function() {
         const calls = [];
         const command = cli
-            .command('test', '[foo]')
+            .command('test [foo]')
             .option('--bar', 'bar option')
             .action(function(...args) {
                 calls.push({

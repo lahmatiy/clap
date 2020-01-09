@@ -6,7 +6,7 @@ describe('command run', function() {
         let command;
 
         beforeEach(function() {
-            command = cli.command('test', '[foo]')
+            command = cli.command('test [foo]')
                 .option('--foo', 'Foo')
                 .option('--bar <number>', 'Bar', Number);
         });
@@ -148,9 +148,9 @@ describe('command run', function() {
     describe('required argument', () => {
         let action;
         const command = cli
-            .command('test', '<arg1>')
+            .command('test <arg1>')
             .action(() => action = '1')
-            .command('nested', '<arg2>')
+            .command('nested <arg2>')
             .action(() => action = '2')
             .end();
 

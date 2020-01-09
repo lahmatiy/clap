@@ -51,7 +51,7 @@ describe('Command help', () => {
 
     it('should show help all cases', () => {
         cli
-            .command('test', '[qux]')
+            .command('test [qux]')
             .description('Test description')
             .option('-f, --foo', 'Foo')
             .option('--bar <baz>', 'Bar', 8080)
@@ -86,9 +86,9 @@ describe('Command help', () => {
 
     it('should show help for nested command', () => {
         cli
-            .command('test', '[qux]')
+            .command('test [qux]')
             .option('-f, --foo', 'Foo')
-            .command('nested', '[nested-arg]')
+            .command('nested [nested-arg]')
             .option('--bar <baz>', 'Bar')
             .end()
             .run(['nested', '--help']);
@@ -109,7 +109,7 @@ describe('Command help', () => {
 
     it('should show help message when Command#outputHelp called', function() {
         const command = cli
-            .command('test', '[qux]')
+            .command('test [qux]')
             .option('-f, --foo', 'Foo');
 
         command.outputHelp();

@@ -18,7 +18,7 @@ describe('suggest', function() {
 
     /* eslint-disable indent */
     const command = cli
-        .command('test', '[arg1]')
+        .command('test [arg1]')
         .option('-f, --foo', 'foo')
         .option('-b, --bar', 'bar')
         .option('--required-arg <arg>', 'option with required argument')
@@ -28,7 +28,7 @@ describe('suggest', function() {
             .option('--bar', 'nested option 2')
             .option('--baz', 'nested option 3')
             .end()
-        .command('bar', '[arg2]')
+        .command('bar [arg2]')
             .command('baz').end()
             .command('qux').end()
             .option('--test', 'test option')

@@ -1,7 +1,7 @@
 ## next
 
 - Restored wrongly removed `Command#extend()`
-- Removed config argument for `Command`
+- Changed `Command`'s constructor and `Command#command(method)` to take `usage` only (i.e. `command('name [param]')` instead `command('name', '[param]')`)
 - Added `Command#clone()` method
 - Added `Command#getCommand(name)` and `Command#getCommands()` methods
 - Added `Command#getOption(name)` and `Command#getOptions()` methods

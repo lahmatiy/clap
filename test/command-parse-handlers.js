@@ -7,11 +7,11 @@ describe('init()/applyConfig()/finishContext()', function() {
 
     beforeEach(function() {
         calls = [];
-        command = cli.command('test', '[arg1]')
+        command = cli.command('test [arg1]')
             .init(() => calls.push('init'))
             .applyConfig(() => calls.push('applyConfig'))
             .finishContext(() => calls.push('finishContext'));
-        command.command('nested', '[arg2] [arg3]')
+        command.command('nested [arg2] [arg3]')
             .init(() => calls.push('nested init'))
             .applyConfig(() => calls.push('nested applyConfig'))
             .finishContext(() => calls.push('nested finishContext'));

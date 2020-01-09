@@ -21,23 +21,23 @@ npm install clap
 ```js
 const cli = require('clap');
 
-const myCommand = cli.command('my-command', '[optional-arg]')
+const myCommand = cli.command('my-command [optional-arg]')
     .description('Optional description')
     .version('1.2.3')
     .option('-b, --bool', 'Bollean option')
     .option('--foo <foo>', 'Option with required argument')
     .option('--bar [bar]', 'Option with optional argument')
-    .option('--baz [value]', 'Option with optional argument and normalize function', function(value) {
-        // calls on init and for any value set
-        return Number(value);
-    }, 123) // 123 is default
-    .action(function(args, literalArgs) {
+    .option('--baz [value]', 'Option with optional argument and normalize function',
+        value => Number(value),
+        123 // 123 is default
+    )
+    .action(function({ options, args, literalArgs }) {
+        // options is an object with collected values
         // args goes before options
-        // literal args goes after --
-        // this.values is an object with collected values
+        // literal args goes after "--"
     });
 
-myCommand.run();  // runs with process.argv.slice(2)
+myCommand.run();  // the same as "myCommnad.run(process.argv.slice(2))"
 myCommand.run(['--foo', '123', '-b'])
 
 // sub-commands
@@ -63,7 +63,7 @@ myCommand
     .version(value, usage, description, action)
     .help(usage, description, action)
     .option(usage, description, ...options)
-    .command(nameOrCommand, params, config)
+    .command(usageOrCommand)
     .extend(fn, ...options)
     .end()
 
