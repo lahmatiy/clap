@@ -1,4 +1,4 @@
-## next
+## 3.0.0-beta.1
 
 - Restored wrongly removed `Command#extend()`
 - Changed `Command`'s constructor and `Command#command(method)` to take `usage` only (i.e. `command('name [param]')` instead `command('name', '[param]')`)
