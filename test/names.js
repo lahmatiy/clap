@@ -1,61 +1,61 @@
-const assert = require('assert');
-const cli = require('../lib');
+import assert, { notStrictEqual, throws, strictEqual } from 'assert';
+import * as clap from 'clap';
 
-describe('names', function() {
-    it('bool option should be in values, options and long', function() {
-        const command = cli.command()
+describe('names', () => {
+    it('bool option should be in values, options and long', () => {
+        const command = clap.command()
             .option('--bool');
 
         assert([...command.options.keys()], ['--bool', 'bool']);
-        assert.notStrictEqual(command.getOption('--bool'), null);
-        assert.notStrictEqual(command.getOption('bool'), null);
+        notStrictEqual(command.getOption('--bool'), null);
+        notStrictEqual(command.getOption('bool'), null);
     });
 
-    it('inverted bool option should be in values and options as normal name and as is in long', function() {
-        const command = cli.command()
+    it('inverted bool option should be in values and options as normal name and as is in long', () => {
+        const command = clap.command()
             .option('--no-bool');
 
         assert([...command.options.keys()], ['--no-bool', 'bool']);
-        assert.notStrictEqual(command.getOption('--no-bool'), null);
-        assert.notStrictEqual(command.getOption('bool'), null);
+        notStrictEqual(command.getOption('--no-bool'), null);
+        notStrictEqual(command.getOption('bool'), null);
     });
 
-    it('dasherized option should store as camelName in options', function() {
-        const command = cli.command()
+    it('dasherized option should store as camelName in options', () => {
+        const command = clap.command()
             .option('--bool-option');
 
         assert([...command.options.keys()], ['--bool-option', 'boolOption']);
-        assert.notStrictEqual(command.getOption('--bool-option'), null);
-        assert.notStrictEqual(command.getOption('boolOption'), null);
+        notStrictEqual(command.getOption('--bool-option'), null);
+        notStrictEqual(command.getOption('boolOption'), null);
     });
 
-    it('non-bool option should have name as is', function() {
-        const command = cli.command()
+    it('non-bool option should have name as is', () => {
+        const command = clap.command()
             .option('--no-bool <arg>');
 
         assert([...command.options.keys()], ['--no-bool', 'noBool']);
-        assert.notStrictEqual(command.getOption('--no-bool'), null);
-        assert.notStrictEqual(command.getOption('noBool'), null);
+        notStrictEqual(command.getOption('--no-bool'), null);
+        notStrictEqual(command.getOption('noBool'), null);
     });
 
-    it('should be exception if no long form', function() {
-        assert.throws(
-            () => cli.command().option('-b'),
+    it('should be exception if no long form', () => {
+        throws(
+            () => clap.command().option('-b'),
             /Usage has no long name: -b/
         );
     });
 
-    it('#getOption() should not resolve option name by long form', function() {
-        const command = cli.command()
+    it('#getOption() should not resolve option name by long form', () => {
+        const command = clap.command()
             .option('--long-form');
 
-        assert.strictEqual(command.getOption('long-form'), null);
+        strictEqual(command.getOption('long-form'), null);
     });
 
-    it('#getOption() should resolve option name by camelName', function() {
-        const command = cli.command()
+    it('#getOption() should resolve option name by camelName', () => {
+        const command = clap.command()
             .option('--long-form');
 
-        assert.notStrictEqual(command.getOption('longForm'), null);
+        notStrictEqual(command.getOption('longForm'), null);
     });
 });

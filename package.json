@@ -13,7 +13,15 @@
     "argument",
     "completion"
   ],
+  "type": "module",
   "main": "lib/index.js",
+  "exports": {
+    ".": {
+      "import": "./lib/index.js",
+      "require": "./cjs/index.cjs"
+    },
+    "./package.json": "./package.json"
+  },
   "files": [
     "lib"
   ],

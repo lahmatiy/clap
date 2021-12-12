@@ -1,9 +1,9 @@
-const assert = require('assert');
-const cli = require('../lib');
+import { deepEqual, throws } from 'assert';
+import * as clap from 'clap';
 
 describe('short options', function() {
     describe('sequence of boolean options', function() {
-        const command = cli.command('test')
+        const command = clap.command('test')
             .option('-f, --foo', 'Foo')
             .option('-b, --bar', 'Bar')
             .option('-x, --baz', 'Baz')
@@ -19,19 +19,19 @@ describe('short options', function() {
         ].forEach(testcase =>
             it(testcase.test, () => {
                 const actual = command.run([testcase.test]);
-                assert.deepEqual(testcase.expected, actual.options);
+                deepEqual(testcase.expected, actual.options);
             })
         );
     });
 
     describe('should throws when unknown short', function() {
-        const command = cli.command('test')
+        const command = clap.command('test')
             .option('-f, --foo', 'Foo')
             .option('-b, --bar', 'Bar');
 
         ['-z', '-fz', '-fbz'].forEach((test) => {
             it(test, () =>
-                assert.throws(
+                throws(
                     () => command.run(['-fz']),
                     /Unknown option "z" in short option sequence: -fz/
                 )
@@ -40,15 +40,15 @@ describe('short options', function() {
     });
 
     it('should throws when non-boolean in sequence', function() {
-        const command = cli.command('test')
+        const command = clap.command('test')
             .option('-f, --foo', 'Foo')
             .option('-b, --bar <asd>', 'Bar');
 
-        assert.throws(
+        throws(
             () => command.run(['-fb']),
             /Non-boolean option "-b" can't be used in short option sequence: -fb/
         );
-        assert.throws(
+        throws(
             () => command.run(['-bf']),
             /Non-boolean option "-b" can't be used in short option sequence: -bf/
         );

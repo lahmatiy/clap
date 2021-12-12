@@ -1,5 +1,5 @@
-const assert = require('assert');
-const cli = require('../lib');
+import { deepEqual } from 'assert';
+import * as clap from 'clap';
 
 describe('Command#extend()', () => {
     it('basic', () => {
@@ -8,8 +8,7 @@ describe('Command#extend()', () => {
             invocations.push(args);
         };
 
-        const command = cli
-            .command('test')
+        const command = clap.command('test')
             .extend(extension, 1, 2);
         const nested = command
             .command('nested')
@@ -18,7 +17,7 @@ describe('Command#extend()', () => {
 
         command.extend(extension, 2, 3);
 
-        assert.deepEqual(invocations, [
+        deepEqual(invocations, [
             [command, 1, 2],
             [nested],
             [nested, 1, 2, 3, 4],

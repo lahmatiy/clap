@@ -1,13 +1,12 @@
-const assert = require('assert');
-const cli = require('../lib');
+import { deepEqual, notStrictEqual, notDeepEqual } from 'assert';
+import { command as cli } from 'clap';
 
 describe('Command#clone()', () => {
     let command;
     let clone;
 
     beforeEach(() => {
-        command = cli
-            .command('test')
+        command = cli('test')
             .description('test')
             .option('--test-option', 'xxx')
             .command('foo')
@@ -17,50 +16,50 @@ describe('Command#clone()', () => {
     });
 
     it('should be deep equal, but dictionaries should not be the same', () => {
-        assert.deepEqual(clone, command);
-        assert.notStrictEqual(clone.commands, command.commands);
-        assert.notStrictEqual(clone.options, command.options);
+        deepEqual(clone, command);
+        notStrictEqual(clone.commands, command.commands);
+        notStrictEqual(clone.options, command.options);
     });
 
     it('should be deep equal if set the same version', () => {
         command.version('1.1.1');
-        assert.notDeepEqual(clone, command);
+        notDeepEqual(clone, command);
 
         clone.version('1.1.1');
-        assert.deepEqual(clone, command);
+        deepEqual(clone, command);
     });
 
     it('should be deep equal if add the same option', () => {
         command.option('--extra', 'zzz');
-        assert.notDeepEqual(clone, command);
+        notDeepEqual(clone, command);
 
         clone.option('--extra', 'zzz');
-        assert.deepEqual(clone, command);
+        deepEqual(clone, command);
     });
 
     it('should be deep equal if add the same subcommand', () => {
         command.command('bar').option('--abc', 'aaa');
-        assert.notDeepEqual(clone, command);
+        notDeepEqual(clone, command);
 
         clone.command('bar').option('--abc', 'aaa');
-        assert.deepEqual(clone.commands.bar, command.commands.bar);
+        deepEqual(clone.commands.bar, command.commands.bar);
     });
 
     it('should be deep equal if add the same option to nested command with deep cloning', () => {
         clone = command.clone(true);
 
         command.getCommand('foo').option('--extra', 'zzz');
-        assert.notDeepEqual(clone, command);
+        notDeepEqual(clone, command);
 
         clone.getCommand('foo').option('--extra', 'zzz');
-        assert.deepEqual(clone, command);
+        deepEqual(clone, command);
     });
 
     it('should apply handlers as expected', () => {
         const actual = clone
             .run(['--test-option']);
 
-        assert.deepEqual(actual.options, {
+        deepEqual(actual.options, {
             testOption: true
         });
     });

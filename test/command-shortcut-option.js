@@ -1,9 +1,9 @@
-const assert = require('assert');
-const cli = require('../lib');
+import { deepEqual } from 'assert';
+import * as clap from 'clap';
 
 describe('Command#shortcutOption()', () => {
     it('basic', () => {
-        const command = cli.command('test')
+        const command = clap.command('test')
             .option('--foo [foo]', 'Foo', Number)
             .option('--no-bar', 'Bar')
             .option('--baz [x]', 'Baz', {
@@ -17,15 +17,15 @@ describe('Command#shortcutOption()', () => {
                 }
             });
 
-        assert.deepEqual(command.run([]).options, {
+        deepEqual(command.run([]).options, {
             bar: true
         });
-        assert.deepEqual(command.run(['--baz', '5']).options, {
+        deepEqual(command.run(['--baz', '5']).options, {
             bar: true,
             baz: '55',
             foo: 55
         });
-        assert.deepEqual(command.run(['--baz', '0']).options, {
+        deepEqual(command.run(['--baz', '0']).options, {
             bar: false,
             baz: '00',
             foo: 0

@@ -1,20 +1,20 @@
-const assert = require('assert');
-const cli = require('../lib');
+import { deepStrictEqual, throws, equal } from 'assert';
+import * as clap from 'clap';
 
-describe('command run', function() {
+describe('command run', () => {
     describe('args and options', () => {
         let command;
 
-        beforeEach(function() {
-            command = cli.command('test [foo]')
+        beforeEach(() => {
+            command = clap.command('test [foo]')
                 .option('--foo', 'Foo')
                 .option('--bar <number>', 'Bar', Number);
         });
 
-        it('no arguments', function() {
+        it('no arguments', () => {
             const actual = command.run([]);
 
-            assert.deepStrictEqual(actual, {
+            deepStrictEqual(actual, {
                 commandPath: ['test'],
                 options: {
                     __proto__: null,
@@ -25,10 +25,10 @@ describe('command run', function() {
             });
         });
 
-        it('args', function() {
+        it('args', () => {
             const actual = command.run(['qux']);
 
-            assert.deepStrictEqual(actual, {
+            deepStrictEqual(actual, {
                 commandPath: ['test'],
                 options: {
                     __proto__: null,
@@ -39,10 +39,10 @@ describe('command run', function() {
             });
         });
 
-        it('options', function() {
+        it('options', () => {
             const actual = command.run(['--foo', '--bar', '123']);
 
-            assert.deepStrictEqual(actual, {
+            deepStrictEqual(actual, {
                 commandPath: ['test'],
                 options: {
                     __proto__: null,
@@ -54,10 +54,10 @@ describe('command run', function() {
             });
         });
 
-        it('literal args', function() {
+        it('literal args', () => {
             const actual = command.run(['--', '--one', '--two', '123']);
 
-            assert.deepStrictEqual(actual, {
+            deepStrictEqual(actual, {
                 commandPath: ['test'],
                 options: {
                     __proto__: null,
@@ -68,10 +68,10 @@ describe('command run', function() {
             });
         });
 
-        it('args & options', function() {
+        it('args & options', () => {
             const actual = command.run(['qux', '--foo', '--bar', '123']);
 
-            assert.deepStrictEqual(actual, {
+            deepStrictEqual(actual, {
                 commandPath: ['test'],
                 options: {
                     __proto__: null,
@@ -83,10 +83,10 @@ describe('command run', function() {
             });
         });
 
-        it('args & options before', function() {
+        it('args & options before', () => {
             const actual = command.run(['--foo', '--bar', '123', 'qux']);
 
-            assert.deepStrictEqual(actual, {
+            deepStrictEqual(actual, {
                 commandPath: ['test'],
                 options: {
                     __proto__: null,
@@ -98,10 +98,10 @@ describe('command run', function() {
             });
         });
 
-        it('args & literal args', function() {
+        it('args & literal args', () => {
             const actual = command.run(['qux', '--', '--one', '--two', '123']);
 
-            assert.deepStrictEqual(actual, {
+            deepStrictEqual(actual, {
                 commandPath: ['test'],
                 options: {
                     __proto__: null,
@@ -112,10 +112,10 @@ describe('command run', function() {
             });
         });
 
-        it('options & literal args', function() {
+        it('options & literal args', () => {
             const actual = command.run(['--foo', '--bar', '123', '--', '--one', '--two', '123']);
 
-            assert.deepStrictEqual(actual, {
+            deepStrictEqual(actual, {
                 commandPath: ['test'],
                 options: {
                     __proto__: null,
@@ -127,10 +127,10 @@ describe('command run', function() {
             });
         });
 
-        it('args & options & literal args', function() {
+        it('args & options & literal args', () => {
             const actual = command.run(['qux', '--foo', '--bar', '123', '--', '--one', '--two', '123']);
 
-            assert.deepStrictEqual(actual, {
+            deepStrictEqual(actual, {
                 commandPath: ['test'],
                 options: {
                     __proto__: null,
@@ -145,12 +145,12 @@ describe('command run', function() {
 
     describe('multi arg option', () => {
         it('x', () => {
-            const command = cli.command()
+            const command = clap.command()
                 .option('--option <arg1> [arg2]', 'description', function(value, oldValue) {
                     return (oldValue || []).concat(value);
                 });
 
-            assert.deepStrictEqual(
+            deepStrictEqual(
                 command.run(['--option','foo', 'bar', '--option', 'baz']).options,
                 {
                     __proto__: null,
@@ -162,36 +162,36 @@ describe('command run', function() {
 
     describe('required argument', () => {
         let action;
-        const command = cli
+        const command = clap
             .command('test <arg1>')
             .action(() => action = '1')
             .command('nested <arg2>')
             .action(() => action = '2')
             .end();
 
-        beforeEach(function() {
+        beforeEach(() => {
             action = '';
         });
 
-        it('should throw exception if no first argument', function() {
-            assert.throws(
+        it('should throw exception if no first argument', () => {
+            throws(
                 () => command.run([]),
                 /Missed required argument\(s\) for command "test"/
             );
         });
-        it('should throw exception if no second argument', function() {
-            assert.throws(
+        it('should throw exception if no second argument', () => {
+            throws(
                 () => command.run(['one', 'nested']),
                 /Missed required argument\(s\) for command "nested"/
             );
         });
-        it('should treat first argument as value', function() {
+        it('should treat first argument as value', () => {
             command.run(['nested']);
-            assert.equal(action, '1');
+            equal(action, '1');
         });
-        it('should run nested action', function() {
+        it('should run nested action', () => {
             command.run(['one', 'nested', 'two']);
-            assert.equal(action, '2');
+            equal(action, '2');
         });
     });
 });

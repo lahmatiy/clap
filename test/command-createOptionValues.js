@@ -1,12 +1,12 @@
-const assert = require('assert');
-const cli = require('../lib');
+import { deepStrictEqual } from 'assert';
+import * as clap from 'clap';
 
-describe('createOptionValues()', function() {
-    it('boolean option', function() {
-        const command = cli.command()
+describe('createOptionValues()', () => {
+    it('boolean option', () => {
+        const command = clap.command()
             .option('--option', 'description', Boolean);
 
-        assert.deepStrictEqual(
+        deepStrictEqual(
             command.createOptionValues({ option: 'bad value' }),
             {
                 __proto__: null,
@@ -15,13 +15,13 @@ describe('createOptionValues()', function() {
         );
     });
 
-    it('number option', function() {
-        const command = cli.command()
+    it('number option', () => {
+        const command = clap.command()
             .option('--option <arg>', 'description', function(value) {
                 return isNaN(value) ? 0 : value;
             }, 1);
 
-        assert.deepStrictEqual(
+        deepStrictEqual(
             command.createOptionValues({ option: 'bad value' }),
             {
                 __proto__: null,
@@ -30,13 +30,13 @@ describe('createOptionValues()', function() {
         );
     });
 
-    it('multi arg option', function() {
-        const command = cli.command()
+    it('multi arg option', () => {
+        const command = clap.command()
             .option('--option <arg1> [arg2]', 'description', function(value, oldValue) {
                 return (oldValue || []).concat(value);
             });
 
-        assert.deepStrictEqual(
+        deepStrictEqual(
             command.createOptionValues({ option: ['foo', 'bar'] }),
             {
                 __proto__: null,
@@ -45,11 +45,11 @@ describe('createOptionValues()', function() {
         );
     });
 
-    it('option with no default value and argument should be set', function() {
-        const command = cli.command()
+    it('option with no default value and argument should be set', () => {
+        const command = clap.command()
             .option('--option <value>');
 
-        assert.deepStrictEqual(
+        deepStrictEqual(
             command.createOptionValues({ option: 'ok' }),
             {
                 __proto__: null,
@@ -58,24 +58,24 @@ describe('createOptionValues()', function() {
         );
     });
 
-    it('should ignore unknown keys', function() {
-        const command = cli.command()
+    it('should ignore unknown keys', () => {
+        const command = clap.command()
             .option('--option <value>');
 
-        assert.deepStrictEqual(
+        deepStrictEqual(
             command.createOptionValues({ foo: 'ok' }),
             Object.create(null)
         );
     });
 
-    it('general test', function() {
-        const command = cli.command()
+    it('general test', () => {
+        const command = clap.command()
             .option('--foo <value>', '', Number)
             .option('--bar [value]')
             .option('--with-default [x]', '', { default: 'default' })
             .option('--bool');
 
-        assert.deepStrictEqual(
+        deepStrictEqual(
             command.createOptionValues({
                 foo: '123',
                 option: 'ok'

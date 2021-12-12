@@ -2,6 +2,7 @@
 
 - Allowed args after and between options
 - Replaced `chalk` with `ansi-colors`
+- Migrated to ESM
 
 ## 3.0.0-beta.1
 

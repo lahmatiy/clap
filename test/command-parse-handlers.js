@@ -1,13 +1,13 @@
-const assert = require('assert');
-const cli = require('../lib');
+import { deepEqual } from 'assert';
+import * as clap from 'clap';
 
-describe('init()/applyConfig()/finishContext()', function() {
+describe('init()/applyConfig()/finishContext()', () => {
     let command;
     let calls;
 
-    beforeEach(function() {
+    beforeEach(() => {
         calls = [];
-        command = cli.command('test [arg1]')
+        command = clap.command('test [arg1]')
             .init(() => calls.push('init'))
             .applyConfig(() => calls.push('applyConfig'))
             .finishContext(() => calls.push('finishContext'));
@@ -17,18 +17,18 @@ describe('init()/applyConfig()/finishContext()', function() {
             .finishContext(() => calls.push('nested finishContext'));
     });
 
-    it('with no arguments should init/finishContext top level command only', function() {
+    it('with no arguments should init/finishContext top level command only', () => {
         command.run([]);
-        assert.deepEqual(calls, ['init', 'applyConfig', 'finishContext']);
+        deepEqual(calls, ['init', 'applyConfig', 'finishContext']);
     });
 
-    it('with one argument should init and finishContext top level command', function() {
+    it('with one argument should init and finishContext top level command', () => {
         command.run(['foo']);
-        assert.deepEqual(calls, ['init', 'applyConfig', 'finishContext']);
+        deepEqual(calls, ['init', 'applyConfig', 'finishContext']);
     });
 
-    it('with first argument as command should init/finishContext both commands', function() {
+    it('with first argument as command should init/finishContext both commands', () => {
         command.run(['nested']);
-        assert.deepEqual(calls, ['init', 'applyConfig', 'finishContext', 'nested init', 'nested applyConfig', 'nested finishContext']);
+        deepEqual(calls, ['init', 'applyConfig', 'finishContext', 'nested init', 'nested applyConfig', 'nested finishContext']);
     });
 });

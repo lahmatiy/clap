@@ -1,13 +1,12 @@
-const assert = require('assert');
-const cli = require('../lib');
+import { equal, notDeepEqual, deepEqual } from 'assert';
+import * as clap from 'clap';
 
-describe('action()', function() {
-    it('should have an expected input', function() {
+describe('action()', () => {
+    it('should have an expected input', () => {
         const calls = [];
-        const command = cli
-            .command('test [foo]')
+        const command = clap.command('test [foo]')
             .option('--bar', 'bar option')
-            .action(function(...args) {
+            .action((...args) => {
                 calls.push({
                     this: this,
                     arguments: args
@@ -16,9 +15,9 @@ describe('action()', function() {
 
         command.run(['abc', '--', 'rest', 'args']);
 
-        assert.equal(calls.length, 1);
-        assert.notDeepEqual(calls[0].this, command);
-        assert.deepEqual(calls[0].arguments, [{
+        equal(calls.length, 1);
+        notDeepEqual(calls[0].this, command);
+        deepEqual(calls[0].arguments, [{
             commandPath: ['test'],
             options: { bar: false },
             args: ['abc'],

@@ -1,22 +1,22 @@
-const assert = require('assert');
-const stdout = require('test-console').stdout;
-const cli = require('../lib');
+import { strictEqual, equal } from 'assert';
+import { stdout } from 'test-console';
+import * as clap from 'clap';
 
 describe('Command help', () => {
     let inspect;
     beforeEach(() => inspect = stdout.inspect());
     afterEach(() => inspect.restore());
 
-    it('should remove default help when .help(false)', function() {
-        const command = cli.command('test').help(false);
+    it('should remove default help when .help(false)', () => {
+        const command = clap.command('test').help(false);
 
-        assert.strictEqual(command.getOption('help'), null);
+        strictEqual(command.getOption('help'), null);
     });
 
     it('should show help', () => {
-        cli.command('test', false).run(['--help']);
+        clap.command('test', false).run(['--help']);
 
-        assert.equal(inspect.output, [
+        equal(inspect.output, [
             'Usage:',
             '',
             '    \u001b[36mtest\u001b[39m [\u001b[33moptions\u001b[39m]',
@@ -29,13 +29,13 @@ describe('Command help', () => {
         ].join('\n'));
     });
 
-    it('help with no short options', function() {
-        cli.command('test', false, { defaultHelp: false })
+    it('help with no short options', () => {
+        clap.command('test', false, { defaultHelp: false })
             .help('--help')
             .option('--foo', 'Foo')
             .run(['--help']);
 
-        assert.equal(inspect.output, [
+        equal(inspect.output, [
             'Usage:',
             '',
             '    \u001b[36mtest\u001b[39m [\u001b[33moptions\u001b[39m]',
@@ -50,8 +50,7 @@ describe('Command help', () => {
     });
 
     it('should show help all cases', () => {
-        cli
-            .command('test [qux]')
+        clap.command('test [qux]')
             .description('Test description')
             .option('-f, --foo', 'Foo')
             .option('--bar <baz>', 'Bar', 8080)
@@ -62,7 +61,7 @@ describe('Command help', () => {
             .end()
             .run(['--help']);
 
-        assert.equal(inspect.output, [
+        equal(inspect.output, [
             'Test description',
             '',
             'Usage:',
@@ -85,15 +84,14 @@ describe('Command help', () => {
     });
 
     it('should show help for nested command', () => {
-        cli
-            .command('test [qux]')
+        clap.command('test [qux]')
             .option('-f, --foo', 'Foo')
             .command('nested [nested-arg]')
             .option('--bar <baz>', 'Bar')
             .end()
             .run(['nested', '--help']);
 
-        assert.equal(inspect.output, [
+        equal(inspect.output, [
             'Usage:',
             '',
             '    \u001b[36mtest nested\u001b[39m \u001b[35m[nested-arg]\u001b[39m [\u001b[33moptions\u001b[39m]',
@@ -107,14 +105,13 @@ describe('Command help', () => {
         ].join('\n'));
     });
 
-    it('should show help message when Command#outputHelp called', function() {
-        const command = cli
-            .command('test [qux]')
+    it('should show help message when Command#outputHelp called', () => {
+        const command = clap.command('test [qux]')
             .option('-f, --foo', 'Foo');
 
         command.outputHelp();
 
-        assert.equal(inspect.output, [
+        equal(inspect.output, [
             'Usage:',
             '',
             '    \u001b[36mtest\u001b[39m \u001b[35m[qux]\u001b[39m [\u001b[33moptions\u001b[39m]',
