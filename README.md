@@ -1,5 +1,5 @@
 [![NPM version](https://img.shields.io/npm/v/clap.svg)](https://www.npmjs.com/package/clap)
-[![Build Status](https://travis-ci.org/lahmatiy/clap.svg?branch=master)](https://travis-ci.org/lahmatiy/clap)
+[![Build Status](https://github.com/lahmatiy/clap/actions/workflows/build.yml/badge.svg)](https://github.com/lahmatiy/clap/actions/workflows/build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/lahmatiy/clap/badge.svg?branch=master)](https://coveralls.io/github/lahmatiy/clap?branch=master)
 
 # Clap.js
