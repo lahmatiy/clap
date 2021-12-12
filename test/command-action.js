@@ -1,4 +1,4 @@
-import { equal, notDeepEqual, deepEqual } from 'assert';
+import { equal, deepEqual, strictEqual } from 'assert';
 import * as clap from 'clap';
 
 describe('action()', () => {
@@ -6,7 +6,7 @@ describe('action()', () => {
         const calls = [];
         const command = clap.command('test [foo]')
             .option('--bar', 'bar option')
-            .action((...args) => {
+            .action(function(...args) {
                 calls.push({
                     this: this,
                     arguments: args
@@ -16,7 +16,7 @@ describe('action()', () => {
         command.run(['abc', '--', 'rest', 'args']);
 
         equal(calls.length, 1);
-        notDeepEqual(calls[0].this, command);
+        strictEqual(calls[0].this, null);
         deepEqual(calls[0].arguments, [{
             commandPath: ['test'],
             options: { bar: false },

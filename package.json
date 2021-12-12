@@ -23,6 +23,7 @@
     "./package.json": "./package.json"
   },
   "files": [
+    "cjs",
     "lib"
   ],
   "engines": {
@@ -35,12 +36,19 @@
     "c8": "^7.10.0",
     "eslint": "^8.4.1",
     "mocha": "^9.1.3",
+    "rollup": "^2.61.1",
     "test-console": "^1.1.0"
   },
   "scripts": {
     "lint": "eslint lib test",
     "lint-and-test": "npm run lint && npm test",
     "test": "mocha --reporter ${REPORTER:-progress}",
-    "coverage": "c8 --reporter=lcovonly npm test"
+    "test:cjs": "mocha cjs-test --reporter ${REPORTER:-progress}",
+    "build": "npm run esm-to-cjs",
+    "build-and-test": "npm run esm-to-cjs-and-test",
+    "esm-to-cjs": "node scripts/esm-to-cjs",
+    "esm-to-cjs-and-test": "npm run esm-to-cjs && npm run test:cjs",
+    "coverage": "c8 --reporter=lcovonly npm test",
+    "prepublishOnly": "npm run lint-and-test && npm run build-and-test"
   }
 }

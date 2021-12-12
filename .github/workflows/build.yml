@@ -16,9 +16,6 @@ jobs:
                   cache: "npm"
             - run: npm ci
             - run: npm run lint
-            - run: npm run bundle-and-test
-              env:
-                  REPORTER: "min"
             - run: npm run coverage
               env:
                   REPORTER: "min"
