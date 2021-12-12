@@ -1,4 +1,4 @@
-## next
+## 3.0.0 (December 12, 2021)
 
 - Allowed args after and between options
 - Replaced `chalk` with `ansi-colors`
@@ -6,7 +6,7 @@
     - Changed supported versions of Node.js to `^12.20.0`, `^14.13.0` and `>=15.0.0`
     - Converted to ESM. CommonJS is supported as well (dual module)
 
-## 3.0.0-beta.1
+## 3.0.0-beta.1 (February 14, 2020)
 
 - Restored wrongly removed `Command#extend()`
 - Changed `Command`'s constructor and `Command#command(method)` to take `usage` only (i.e. `command('name [param]')` instead `command('name', '[param]')`)
@@ -33,7 +33,7 @@
 - Added `Option#names()` method
 - Removed name validation for subcommands
 - Allowed a number for options's short name
-- Changed argv parse handlers to [`init()` -> `applyConfig()` -> `prepareContext()`]+ -> `action()`
+- Changed `argv` parse handlers to [`init()` → `applyConfig()` → `prepareContext()`]+ → `action()`
 - Changed exports
     - Added `getCommandHelp()` function
     - Added `Params` class
