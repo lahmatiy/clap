@@ -83,6 +83,21 @@ describe('command run', function() {
             });
         });
 
+        it('args & options before', function() {
+            const actual = command.run(['--foo', '--bar', '123', 'qux']);
+
+            assert.deepStrictEqual(actual, {
+                commandPath: ['test'],
+                options: {
+                    __proto__: null,
+                    foo: true,
+                    bar: 123
+                },
+                args: ['qux'],
+                literalArgs: null
+            });
+        });
+
         it('args & literal args', function() {
             const actual = command.run(['qux', '--', '--one', '--two', '123']);
 

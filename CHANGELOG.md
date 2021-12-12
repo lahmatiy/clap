@@ -1,3 +1,7 @@
+## next
+
+- Allowed args after and between options
+
 ## 3.0.0-beta.1
 
 - Restored wrongly removed `Command#extend()`
