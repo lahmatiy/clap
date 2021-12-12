@@ -2,7 +2,9 @@
 
 - Allowed args after and between options
 - Replaced `chalk` with `ansi-colors`
-- Migrated to ESM (CommonJS is still supported)
+- Package
+    - Changed supported versions of Node.js to `^12.20.0`, `^14.13.0` and `>=15.0.0`
+    - Converted to ESM. CommonJS is supported as well (dual module)
 
 ## 3.0.0-beta.1
 
