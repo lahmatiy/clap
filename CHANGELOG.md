@@ -1,6 +1,7 @@
 ## next
 
 - Allowed args after and between options
+- Replaced `chalk` with `ansi-colors`
 
 ## 3.0.0-beta.1
 
