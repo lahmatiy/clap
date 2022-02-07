@@ -39,6 +39,34 @@ describe('command run', () => {
             });
         });
 
+        it('args: - as a value', () => {
+            const actual = command.run(['-']);
+
+            deepStrictEqual(actual, {
+                commandPath: ['test'],
+                options: {
+                    __proto__: null,
+                    foo: false
+                },
+                args: ['-'],
+                literalArgs: null
+            });
+        });
+
+        it('args: - as a value after an option', () => {
+            const actual = command.run(['--foo', '-']);
+
+            deepStrictEqual(actual, {
+                commandPath: ['test'],
+                options: {
+                    __proto__: null,
+                    foo: true
+                },
+                args: ['-'],
+                literalArgs: null
+            });
+        });
+
         it('options', () => {
             const actual = command.run(['--foo', '--bar', '123']);
 

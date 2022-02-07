@@ -2,6 +2,7 @@
 
 - Fixed signature of `command()` function by removing parameters except the first one, since others are not used anymore
 - Added throwing an error when using the second parameter in a command definition (i.e. `command("name", "[arg1] [arg2]")`) to avoid mistakes on migration from v2.0
+- Allowed `-` as a value for arg
 
 ## 3.0.0 (December 12, 2021)
 
