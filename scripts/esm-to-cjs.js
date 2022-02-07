@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import { rollup } from 'rollup';
+import { rollup, watch } from 'rollup';
 
+const watchMode = process.argv.includes('--watch');
 const external = [
     'fs',
     'path',
@@ -39,10 +40,7 @@ function readDir(dir) {
 async function build(outputDir, ...entryPoints) {
     const startTime = Date.now();
 
-    console.log();
-    console.log(`Convert ESM to CommonJS (output: ${outputDir})`);
-
-    const res = await rollup({
+    const inputOptions = {
         external,
         input: entryPoints,
         plugins: [
@@ -50,8 +48,8 @@ async function build(outputDir, ...entryPoints) {
                 'lib/version.js': removeCreateRequire
             })
         ]
-    });
-    await res.write({
+    };
+    const outputOptions = {
         dir: outputDir,
         entryFileNames: '[name].cjs',
         format: 'cjs',
@@ -62,10 +60,29 @@ async function build(outputDir, ...entryPoints) {
         generatedCode: {
             constBindings: true
         }
-    });
-    await res.close();
+    };
 
-    console.log(`Done in ${Date.now() - startTime}ms`);
+    if (!watchMode) {
+        console.log();
+        console.log(`Convert ESM to CommonJS (output: ${outputDir})`);
+
+        const bundle = await rollup(inputOptions);
+        await bundle.write(outputOptions);
+        await bundle.close();
+
+        console.log(`Done in ${Date.now() - startTime}ms`);
+    } else {
+        const watcher = watch({
+            ...inputOptions,
+            output: outputOptions
+        });
+
+        watcher.on('event', ({ code, duration }) => {
+            if (code === 'BUNDLE_END') {
+                console.log(`Convert ESM to CommonJS into "${outputDir}" done in ${duration}ms`);
+            }
+        });
+    }
 }
 
 async function buildAll() {
