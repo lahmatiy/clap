@@ -1,6 +1,11 @@
+## next
+
+- Fixed signature of `command()` function by removing parameters except the first one, since others are not used anymore
+- Added throwing an error when using the second parameter in a command definition (i.e. `command("name", "[arg1] [arg2]")`) to avoid mistakes on migration from v2.0
+
 ## 3.0.0 (December 12, 2021)
 
-- Allowed args after and between options
+- Allowed args between and after the options
 - Replaced `chalk` with `ansi-colors`
 - Package
     - Changed supported versions of Node.js to `^12.20.0`, `^14.13.0` and `>=15.0.0`
@@ -48,8 +53,8 @@
 
 - Dropped support for Node < 8
 - Bumped deps to latest versions
-- Added config argument for Command and create function
-    - `defaultHelp` option to prevent adding `--`help option on command create
+- Added config argument for `Command` and create a function
+    - `defaultHelp` option to prevent adding `--help` option on command create
     - `infoOptionAction` option to override action when info option involved (output to stdout and `exit(0)` by default)
 - Added `Command#infoOption()` method
 - Fixed failure on argv parsing when all types of values are passed (i.e. args & options & literal args)

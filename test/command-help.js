@@ -7,14 +7,14 @@ describe('Command help', () => {
     beforeEach(() => inspect = stdout.inspect());
     afterEach(() => inspect.restore());
 
-    it('should remove default help when .help(false)', () => {
+    it('should remove default --help option when .help(false)', () => {
         const command = clap.command('test').help(false);
 
         strictEqual(command.getOption('help'), null);
     });
 
     it('should show help', () => {
-        clap.command('test', false).run(['--help']);
+        clap.command('test').run(['--help']);
 
         equal(inspect.output, [
             'Usage:',
@@ -30,7 +30,7 @@ describe('Command help', () => {
     });
 
     it('help with no short options', () => {
-        clap.command('test', false, { defaultHelp: false })
+        clap.command('test')
             .help('--help')
             .option('--foo', 'Foo')
             .run(['--help']);

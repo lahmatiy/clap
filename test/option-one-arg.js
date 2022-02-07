@@ -88,7 +88,7 @@ describe('one arg options', () => {
             );
         });
 
-        it('#setValue should normalizenew value', () => {
+        it('#setValue should normalize new value', () => {
             const command = clap.command()
                 .option('--option <arg>', 'description', value => value * 2);
 
