@@ -22,19 +22,6 @@ jobs:
             - run: npm ci
             - run: npm run lint
 
-    test-bundle:
-        name: Test bundle
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v2
-            - name: Setup node ${{ env.PRIMARY_NODEJS_VERSION }}
-              uses: actions/setup-node@v2
-              with:
-                node-version: ${{ env.PRIMARY_NODEJS_VERSION }}
-                cache: "npm"
-            - run: npm ci
-            - run: npm run bundle-and-test
-
     unit-tests:
         name: Unit tests
         runs-on: ubuntu-latest
