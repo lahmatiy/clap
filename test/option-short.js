@@ -33,7 +33,7 @@ describe('short options', function() {
             it(test, () =>
                 throws(
                     () => command.run(['-fz']),
-                    /Unknown option "z" in short option sequence: -fz/
+                    /Unknown option "z" in short options sequence: -fz/
                 )
             );
         });
@@ -46,11 +46,22 @@ describe('short options', function() {
 
         throws(
             () => command.run(['-fb']),
-            /Non-boolean option "-b" can't be used in short option sequence: -fb/
+            /Non-boolean option "-b" can't be used in short options sequence: -fb/
         );
         throws(
             () => command.run(['-bf']),
-            /Non-boolean option "-b" can't be used in short option sequence: -bf/
+            /Non-boolean option "-b" can't be used in short options sequence: -bf/
+        );
+    });
+
+    it('should throws when bad chars used in sequence', function() {
+        const command = clap.command('test')
+            .option('-f, --foo', 'Foo')
+            .option('-b, --bar <asd>', 'Bar');
+
+        throws(
+            () => command.run(['-f!']),
+            /Bad short options sequence: -f!/
         );
     });
 });
