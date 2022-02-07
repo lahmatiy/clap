@@ -1,4 +1,4 @@
-## next
+## 3.1.0 (February 7, 2022)
 
 - Fixed signature of `command()` function by removing parameters except the first one, since others are not used anymore
 - Added throwing an error when using the second parameter in a command definition (i.e. `command("name", "[arg1] [arg2]")`) to avoid mistakes on migration from v2.0

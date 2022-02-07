@@ -1,11 +1,10 @@
 {
   "name": "clap",
-  "title": "Command line argument parser",
+  "version": "3.1.0",
   "description": "Command line argument parser",
   "author": "Roman Dvornov <rdvornov@gmail.com>",
   "repository": "lahmatiy/clap",
   "license": "MIT",
-  "version": "3.0.0",
   "keywords": [
     "cli",
     "command",
