@@ -1,3 +1,7 @@
+## next
+
+- Fixed a regression for short options which can't be used with a parameter when not in a short options sequence
+
 ## 3.1.0 (February 7, 2022)
 
 - Fixed signature of `command()` function by removing parameters except the first one, since others are not used anymore

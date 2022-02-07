@@ -2,6 +2,35 @@ import { deepEqual, throws } from 'assert';
 import * as clap from 'clap';
 
 describe('short options', function() {
+    describe('params when not in a sequence', () => {
+        const command = clap.command('test')
+            .option('-o, --optional [abc]', 'Optional')
+            .option('-r, --required <abc>', 'Required');
+
+        it('should allow ommit optional parameters', () => {
+            deepEqual(command.run(['-o']).options, {
+                optional: undefined
+            });
+        });
+        it('should take optional parameters', () => {
+            deepEqual(command.run(['-o', 'test']).options, {
+                optional: 'test'
+            });
+        });
+
+        it('should throws when required parameter is missed', () => {
+            throws(
+                () => command.run(['-r']),
+                /Option -r should be used with at least 1 argument\(s\)/
+            );
+        });
+        it('should be ok when required parameter is presented', () => {
+            deepEqual(command.run(['-r', 'test']).options, {
+                required: 'test'
+            });
+        });
+    });
+
     describe('sequence of boolean options', function() {
         const command = clap.command('test')
             .option('-f, --foo', 'Foo')
@@ -19,7 +48,7 @@ describe('short options', function() {
         ].forEach(testcase =>
             it(testcase.test, () => {
                 const actual = command.run([testcase.test]);
-                deepEqual(testcase.expected, actual.options);
+                deepEqual(actual.options, testcase.expected);
             })
         );
     });
