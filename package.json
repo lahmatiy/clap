@@ -1,6 +1,6 @@
 {
   "name": "clap",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Command line argument parser",
   "author": "Roman Dvornov <rdvornov@gmail.com>",
   "repository": "lahmatiy/clap",
