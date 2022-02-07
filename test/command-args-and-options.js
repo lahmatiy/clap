@@ -213,6 +213,16 @@ describe('command run', () => {
                 /Missed required argument\(s\) for command "nested"/
             );
         });
+        it('should throw when unknown command', () => {
+            throws(
+                () => command.run(['one', 'two']),
+                /Unknown command: two/
+            );
+            throws(
+                () => command.run(['one', 'nested', 'two', 'three']),
+                /Unknown command: three/
+            );
+        });
         it('should treat first argument as value', () => {
             command.run(['nested']);
             equal(action, '1');
