@@ -70,7 +70,7 @@ myCommand
     // argv processing pipeline handler setters
     .init(command, context)
     .applyConfig(context)
-    .prerareContenxt(context)
+    .finishContext(context)
     .action(context)
 
     // main methods
@@ -115,14 +115,14 @@ Where `options`:
 - apply **config** options
 - `applyConfig(context)`
 - apply all the rest options
-- `prepareContext(context)` // after arguments parsing
+- `finishContext(context)` // after arguments parsing
     - switch to next command -> command is prescending
         - `init(command, context)`
             - invoke action option and exit if any
         - apply **config** options
         - `applyConfig(context)`
         - apply all the rest options
-        - `prepareContext(context)` // after arguments parsing
+        - `finishContext(context)` // after arguments parsing
             - switch to next command
                 - ...
             - `action(context)` -> command is target
